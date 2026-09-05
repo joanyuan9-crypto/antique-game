@@ -913,10 +913,11 @@ let role = null;
 let socket = null;
 let roomId = null;
 let isHost = false;
-let level1Passed = localStorage.getItem("level1Passed") === "true";
-if (!level1Passed) level1Passed = true;
 
-// 素材
+// 关卡解锁状态：仅从本地存储读取，无保底
+let level1Passed = localStorage.getItem("level1Passed") === "true";
+
+// ==================== 素材 ====================
 const ALL_PLANTS = {
     plum: { name: "梅花", value: 3, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><circle cx="20" cy="14" r="6" fill="#f8bbd0"/><circle cx="12" cy="22" r="6" fill="#f8bbd0"/><circle cx="28" cy="22" r="6" fill="#f8bbd0"/><circle cx="16" cy="30" r="6" fill="#f8bbd0"/><circle cx="24" cy="30" r="6" fill="#f8bbd0"/><circle cx="20" cy="22" r="4" fill="#ffeb3b"/></svg>' },
     orchid: { name: "兰花", value: 8, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><path d="M20 8 L20 32" stroke="#81c784" stroke-width="2"/><ellipse cx="20" cy="12" rx="8" ry="5" fill="#ce93d8"/><ellipse cx="12" cy="18" rx="6" ry="4" fill="#e1bee7"/><ellipse cx="28" cy="18" rx="6" ry="4" fill="#e1bee7"/><ellipse cx="20" cy="24" rx="7" ry="4" fill="#ce93d8"/></svg>' },
@@ -976,7 +977,7 @@ const RELIC_RULES = [
 const BEAST_HINTS = ["饕餮不在阵法中", "朱雀在偶数位", "土属性神兽在第3位"];
 const RELIC_HINTS = ["第4位是玉器", "炉类必定入选", "牌类在奇数位"];
 
-// 关卡选择
+// ==================== 关卡控制 ====================
 function refreshLevelLock() {
     const level2Card = document.getElementById("level2-card");
     const level2Lock = document.getElementById("level2-lock");
@@ -990,6 +991,7 @@ function refreshLevelLock() {
 }
 
 function pickLevel(level) {
+    // 第一关直接进入
     if (level === 1) {
         currentLevel = 1;
         document.body.className = "level1";
@@ -1003,10 +1005,13 @@ function pickLevel(level) {
         }, 300);
         return;
     }
-    if (level === 2 && !level1Passed) {
+
+    // 第二关：未通关则拦截
+    if (!level1Passed) {
         alert("请先通关第一关，再进入第二关。");
         return;
     }
+
     currentLevel = 2;
     document.body.className = "level2";
     document.querySelectorAll(".level-card").forEach((card, i) => {
@@ -1033,7 +1038,7 @@ function backToLevelSelect() {
     document.getElementById("page-room").classList.add("hidden");
     document.getElementById("page-role").classList.add("hidden");
     document.getElementById("page-level").classList.remove("hidden");
-    refreshLevelLock();
+    refreshLevelLock(); // 返回选关时刷新锁状态
 }
 
 function renderRoleSelect() {
@@ -1092,7 +1097,7 @@ function backToRole() {
     document.getElementById("match-box").classList.add("hidden");
 }
 
-// Socket
+// ==================== Socket通信 ====================
 function initSocket() {
     socket = io(SERVER_URL, { transports: ["websocket", "polling"] });
     socket.on("queue-update", data => {
@@ -1161,7 +1166,7 @@ function handleGameData(msg) {
     else handleMessage2(msg);
 }
 
-// 第一关逻辑
+// ==================== 第一关逻辑 ====================
 let seq1 = [];
 let attempts1 = 5;
 let won1 = false;
@@ -1304,15 +1309,15 @@ function submitAnswer1() {
     attempts1--;
     document.getElementById("shop1-attempts").textContent = attempts1;
     const correctCount = seq1.filter((k, i) => k === puzzle1.correctOrder[i]).length;
+
     if (correctCount === 4) {
         won1 = true;
+        // 正式通关：解锁第二关
+        level1Passed = true;
+        localStorage.setItem("level1Passed", "true");
         showFeedback1("✅ 完全正确！密码解锁", "success");
         syncState1();
-        setTimeout(() => {
-            level1Passed = true;
-            localStorage.setItem("level1Passed", "true");
-            showWin(5 - attempts1);
-        }, 800);
+        setTimeout(() => showWin(5 - attempts1), 800);
     } else {
         showFeedback1("❌ 对了 " + correctCount + " 位", "fail");
         const slots = document.getElementById("code1-slots");
@@ -1388,6 +1393,7 @@ function handleMessage1(msg) {
             document.getElementById("acc1-hints").textContent = hints1.acc;
             document.getElementById("acc1-hint-btn").disabled = hints1.acc <= 0;
         }
+        // 对方通关：同步解锁
         if (won1) {
             level1Passed = true;
             localStorage.setItem("level1Passed", "true");
@@ -1457,7 +1463,7 @@ function addChat1(text, type) {
     });
 });
 
-// 第二关逻辑
+// ==================== 第二关逻辑 ====================
 let seq2 = [];
 let attempts2 = 4;
 let won2 = false;
@@ -1648,6 +1654,7 @@ function submitAnswer2() {
     attempts2--;
     document.getElementById("shop2-attempts").textContent = attempts2;
     const correctCount = seq2.filter((k, i) => k === puzzle2.correctOrder[i]).length;
+
     if (correctCount === 4) {
         won2 = true;
         showFeedback2("✅ 瑞兽归位，机关开启", "success");
@@ -1797,7 +1804,7 @@ function addChat2(text, type) {
     });
 });
 
-// 通用
+// ==================== 通用 ====================
 function showWin(count) {
     document.getElementById("final-attempts").textContent = count;
     if (currentLevel === 1) {
@@ -1815,7 +1822,7 @@ function resetCurrentGame() {
     else resetGame2();
 }
 
-// 初始化
+// 页面初始化
 refreshLevelLock();
 </script>
 </body>
