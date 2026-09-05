@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>古董店密码门</title>
+<title>老古董</title>
 <style>
 * {
     box-sizing: border-box;
@@ -843,22 +843,22 @@ svg.plant-icon {
 <div class="container">
     <div class="title">🏺 古董店密码门</div>
 
-    <!-- 关卡选择 -->
-    <div id="page-level">
-        <div class="section-title">选择关卡</div>
-        <div class="level-select">
-            <div class="level-card active" onclick="pickLevel(1)">
-                <h3>第一关</h3>
-                <p>面值密码锁</p>
-            </div>
-            <div class="level-card" id="level2-card" onclick="pickLevel(2)">
-                <h3>第二关</h3>
-                <p>瑞兽镇阵</p>
-                <div class="lock-icon" id="level2-lock">🔒</div>
-            </div>
+   <!-- 关卡选择 -->
+<div id="page-level">
+    <div class="section-title">选择关卡</div>
+    <div class="level-select">
+        <div class="level-card active" onclick="pickLevel(1)">
+            <h3>第一关</h3>
+            <p>面值密码锁</p>
         </div>
-        <div class="status">两人协作，信息不对称解谜</div>
+        <div class="level-card" id="level2-card" onclick="pickLevel(2)">
+            <h3>第二关</h3>
+            <p>瑞兽镇阵</p>
+            <div class="lock-icon" id="level2-lock">🔒</div>
+        </div>
     </div>
+    <div class="status">协作、解谜</div>
+</div>
 
     <!-- 选角色 -->
     <div id="page-role" class="hidden">
