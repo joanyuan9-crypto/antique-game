@@ -5,170 +5,386 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>古董店密码门</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-    font-family: "Microsoft YaHei", "SimSun", serif;
-    min-height: 100vh;
-    padding: 20px;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
+
+:root {
+    --ink: #2E1F18;
+    --paper: #F7EFE3;
+    --ivory: #FFF7EA;
+    --antique: #C8A86A;
+    --bronze: #8B7355;
+    --jade: #A8C9BA;
+    --cinnabar: #B3423D;
+    --porcelain: #D6EAF8;
+    --copper: #B87333;
+    --shadow: rgba(46, 31, 24, 0.08);
+    --radius: 12px;
+}
+
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", "SimSun", serif;
+    background:
+        radial-gradient(circle at 8% 8%, rgba(200, 168, 106, 0.06) 0%, transparent 50%),
+        linear-gradient(135deg, #F7EFE3 0%, #EFE3D1 45%, #F5EAD8 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 18px;
+    font-size: 16px;
+    line-height: 1.65;
+}
+
 .container {
     max-width: 640px;
     margin: 0 auto;
-    border-radius: 10px;
+    background:
+        linear-gradient(180deg, rgba(255, 247, 234, 0.96) 0%, rgba(247, 239, 227, 0.98) 100%);
+    border: 1px solid rgba(139, 115, 85, 0.18);
+    border-radius: var(--radius);
     padding: 28px;
-    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    box-shadow:
+        0 12px 28px rgba(46, 31, 24, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.75);
 }
+
 .title {
     text-align: center;
-    font-size: 26px;
-    font-weight: bold;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 3px;
+    color: #1A1A1A;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: var(--bronze);
     margin-bottom: 24px;
     letter-spacing: 2px;
 }
+
 .btn {
     display: block;
     width: 100%;
-    padding: 14px;
+    padding: 14px 16px;
     margin: 12px 0;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 16px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: 0.22s ease;
     font-family: inherit;
+    font-weight: 600;
+    color: white;
+    background:
+        linear-gradient(135deg, #8B7355 0%, #6B5344 100%);
+    box-shadow: 0 4px 10px rgba(107, 83, 68, 0.25);
 }
-.btn:disabled { cursor: not-allowed; opacity: 0.5; }
-.btn-secondary { }
+
+.btn:hover {
+    transform: translateY(-1px);
+    background:
+        linear-gradient(135deg, #9B8365 0%, #7B6354 100%);
+    box-shadow: 0 6px 14px rgba(107, 83, 68, 0.35);
+}
+
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-secondary {
+    background:
+        linear-gradient(135deg, #EFE3D1 0%, #DFD1BD 100%);
+    color: var(--ink);
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    box-shadow: 0 4px 10px rgba(46, 31, 24, 0.08);
+}
+
+.btn-secondary:hover {
+    background:
+        linear-gradient(135deg, #F5EAD8 0%, #EFE3D1 100%);
+}
+
 .btn-small {
-    padding: 8px 12px;
-    font-size: 13px;
+    padding: 9px 14px;
+    font-size: 14px;
     margin: 6px 0;
 }
+
 .input {
     width: 100%;
-    padding: 12px;
+    padding: 12px 14px;
     margin: 10px 0;
-    border-radius: 6px;
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
     font-size: 18px;
     text-align: center;
     letter-spacing: 6px;
     font-family: inherit;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--ink);
 }
-.section { margin-bottom: 24px; }
+
+.section {
+    margin-bottom: 24px;
+}
+
 .section-title {
     font-size: 18px;
-    font-weight: bold;
+    font-weight: 700;
     margin-bottom: 14px;
     padding-bottom: 8px;
-    border-bottom: 1px solid;
+    border-bottom: 1px solid rgba(139, 115, 85, 0.25);
+    color: #1A1A1A;
 }
+
 .status {
     text-align: center;
-    padding: 12px;
-    border-radius: 6px;
+    padding: 12px 14px;
+    border-radius: 8px;
     margin-bottom: 16px;
     font-size: 14px;
-    line-height: 1.6;
+    line-height: 1.7;
+    background: rgba(139, 115, 85, 0.06);
+    color: #5A4835;
 }
+
 .room-id {
     text-align: center;
     font-size: 36px;
-    font-weight: bold;
+    font-weight: 700;
     margin: 16px 0;
-    font-family: monospace;
+    font-family: "SF Mono", Consolas, monospace;
     letter-spacing: 8px;
+    color: var(--cinnabar);
 }
+
 .role-select {
     display: flex;
     gap: 16px;
     margin-bottom: 24px;
 }
+
 .role-card {
     flex: 1;
     padding: 24px 16px;
-    border-radius: 8px;
+    border-radius: var(--radius);
     text-align: center;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: 0.22s ease;
+    border: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.65);
 }
-.role-card.active { transform: translateY(-2px); }
-.role-card h3 { margin-bottom: 10px; font-size: 18px; }
-.role-card p { font-size: 13px; line-height: 1.6; }
+
+.role-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.role-card.active {
+    border-color: var(--antique);
+    background:
+        linear-gradient(135deg, rgba(200, 168, 106, 0.14) 0%, rgba(200, 168, 106, 0.04) 100%);
+    box-shadow: 0 0 0 4px rgba(200, 168, 106, 0.08);
+}
+
+.role-card h3 {
+    margin-bottom: 8px;
+    font-size: 18px;
+    color: #1A1A1A;
+}
+
+.role-card p {
+    font-size: 13px;
+    color: #6B5344;
+    line-height: 1.6;
+}
+
 .rules-list {
-    border-left: 4px solid;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(247, 239, 227, 0.65) 100%);
+    border-left: 4px solid var(--antique);
     padding: 14px 16px;
     margin-bottom: 20px;
     font-size: 14px;
     line-height: 1.8;
     list-style: none;
+    border-radius: 0 8px 8px 0;
+    color: #5A4835;
 }
-.rules-list li { margin: 6px 0; }
-.hint-rule { font-weight: bold; }
+
+.rules-list li {
+    margin: 6px 0;
+    position: relative;
+    padding-left: 18px;
+}
+
+.rules-list li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    color: var(--antique);
+    font-size: 10px;
+    top: 4px;
+}
+
+.hint-rule {
+    color: var(--cinnabar);
+    font-weight: 700;
+}
+
 .chat-box {
-    border-radius: 6px;
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
     height: 120px;
     overflow-y: auto;
-    padding: 10px;
+    padding: 10px 12px;
     margin-bottom: 10px;
     font-size: 13px;
     line-height: 1.5;
+    background: rgba(255, 255, 255, 0.75);
 }
-.chat-msg { margin: 4px 0; }
-.chat-msg.self { text-align: right; }
-.chat-msg.peer { text-align: left; }
-.chat-input-row { display: flex; gap: 10px; }
+
+.chat-msg {
+    margin: 4px 0;
+}
+
+.chat-msg.self {
+    text-align: right;
+    color: #1A1A1A;
+}
+
+.chat-msg.peer {
+    text-align: left;
+    color: #6B5344;
+}
+
+.chat-input-row {
+    display: flex;
+    gap: 10px;
+}
+
 .chat-input-row input {
     flex: 1;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 10px 12px;
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
     font-size: 14px;
     font-family: inherit;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--ink);
 }
+
 .win-modal {
     position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.6);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 26, 26, 0.55);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 100;
 }
+
 .win-content {
+    background:
+        linear-gradient(180deg, #FFF7EA 0%, #F7EFE3 100%);
     padding: 36px;
-    border-radius: 10px;
+    border-radius: var(--radius);
     text-align: center;
     max-width: 400px;
     width: 90%;
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    box-shadow: 0 20px 40px rgba(46, 31, 24, 0.18);
 }
-.win-content h2 { margin-bottom: 18px; font-size: 24px; }
+
+.win-content h2 {
+    margin-bottom: 18px;
+    font-size: 24px;
+    color: #1A1A1A;
+}
+
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-6px); }
     75% { transform: translateX(6px); }
 }
-.hidden { display: none !important; }
+
+.hidden {
+    display: none !important;
+}
+
 .divider {
     text-align: center;
     margin: 20px 0;
     font-size: 14px;
+    color: var(--bronze);
     position: relative;
 }
-.divider::before, .divider::after {
-    content: '';
+
+.divider::before,
+.divider::after {
+    content: "";
     position: absolute;
     top: 50%;
     width: 40%;
     height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(139, 115, 85, 0.25), transparent);
 }
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
 .feedback {
     text-align: center;
-    padding: 10px;
-    border-radius: 6px;
+    padding: 10px 14px;
+    border-radius: 8px;
     margin: 10px 0;
-    font-weight: bold;
+    font-weight: 700;
+    font-size: 15px;
 }
-.feedback.success { }
-.feedback.fail { }
+
+.feedback.success {
+    background: rgba(46, 125, 50, 0.08);
+    color: #2E7D32;
+    border: 1px solid rgba(46, 125, 50, 0.18);
+}
+
+.feedback.fail {
+    background: rgba(198, 40, 40, 0.08);
+    color: #C62828;
+    border: 1px solid rgba(198, 40, 40, 0.18);
+}
+
+.action-row {
+    display: flex;
+    gap: 10px;
+    margin: 16px 0;
+}
+
+.action-row .btn {
+    flex: 1;
+    margin: 0;
+}
+
+svg.plant-icon {
+    width: 100%;
+    height: 100%;
+}
 
 /* ========== 关卡选择 ========== */
 .level-select {
@@ -177,88 +393,134 @@ body {
     gap: 16px;
     margin-bottom: 24px;
 }
+
 .level-card {
     padding: 30px 16px;
-    border-radius: 8px;
+    border-radius: var(--radius);
     text-align: center;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: 0.22s ease;
     border: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.65);
 }
-.level-card:hover { transform: translateY(-2px); }
-.level-card h3 { font-size: 20px; margin-bottom: 8px; }
-.level-card p { font-size: 13px; opacity: 0.8; }
 
-/* ========== 第一关样式 ========== */
-.level1 {
-    background: #f5e6d3;
-    color: #3e2723;
+.level-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.9);
 }
-.level1 .container {
-    background: #fff8e1;
-    border: 2px solid #8d6e63;
+
+.level-card.locked {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
 }
-.level1 .title { color: #5d4037; }
-.level1 .btn { background: #8d6e63; color: white; }
-.level1 .btn:hover { background: #6d4c41; }
-.level1 .btn-secondary { background: #a1887f; }
-.level1 .btn-secondary:hover { background: #8d6e63; }
-.level1 .input { border: 1px solid #a1887f; background: #fff; }
-.level1 .section-title { color: #5d4037; border-color: #d7ccc8; }
-.level1 .status { background: #efebe9; }
-.level1 .room-id { color: #c62828; }
-.level1 .role-card {
-    border: 2px solid #a1887f;
-    background: #fff;
+
+.level-card.active {
+    border-color: var(--antique);
+    background:
+        linear-gradient(135deg, rgba(200, 168, 106, 0.14) 0%, rgba(200, 168, 106, 0.04) 100%);
+    box-shadow: 0 0 0 4px rgba(200, 168, 106, 0.08);
 }
-.level1 .role-card.active {
-    border-color: #5d4037;
-    background: #d7ccc8;
+
+.level-card h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #1A1A1A;
 }
-.level1 .role-card p { color: #6d4c41; }
+
+.level-card p {
+    font-size: 13px;
+    color: #6B5344;
+}
+
+.lock-icon {
+    margin-top: 8px;
+    font-size: 18px;
+    color: var(--cinnabar);
+}
+
+/* ========== 第一关 ========== */
 .level1 .stamps-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     margin-bottom: 20px;
 }
+
 .level1 .stamp-card {
     padding: 14px 8px;
-    background: #fff;
-    border: 1px solid #a1887f;
-    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: 0.22s ease;
 }
-.level1 .stamp-card:hover { border-color: #5d4037; }
-.level1 .stamp-card .icon { width: 40px; height: 40px; margin: 0 auto 8px; }
-.level1 .stamp-card .name { font-weight: bold; margin-bottom: 4px; font-size: 14px; }
-.level1 .stamp-card .value { color: #c62828; font-size: 13px; font-weight: bold; }
-.level1 .rules-list { background: #fff3e0; border-color: #ff8f00; }
-.level1 .hint-rule { color: #2e7d32; }
+
+.level1 .stamp-card:hover {
+    border-color: var(--antique);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.level1 .stamp-card .icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 8px;
+}
+
+.level1 .stamp-card .name {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #1A1A1A;
+}
+
+.level1 .stamp-card .value {
+    color: var(--cinnabar);
+    font-size: 13px;
+    font-weight: 700;
+}
+
 .level1 .code-slots {
     display: flex;
     justify-content: center;
     gap: 12px;
     margin-bottom: 20px;
 }
+
 .level1 .slot {
     width: 56px;
     height: 56px;
-    border: 2px solid #8d6e63;
-    border-radius: 6px;
-    background: #fff;
+    border: 2px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.85);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: 0.22s ease;
 }
-.level1 .slot:hover { background: #faf0e6; }
-.level1 .slot:empty { cursor: default; }
-.level1 .slot:empty:hover { background: #fff; }
-.level1 .slot svg { width: 36px; height: 36px; }
+
+.level1 .slot:hover {
+    border-color: var(--antique);
+    background: rgba(255, 255, 255, 1);
+}
+
+.level1 .slot:empty {
+    cursor: default;
+}
+
+.level1 .slot:empty:hover {
+    border-color: rgba(139, 115, 85, 0.25);
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.level1 .slot svg {
+    width: 36px;
+    height: 36px;
+}
+
 .level1 .keys-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -266,236 +528,315 @@ body {
     max-width: 420px;
     margin: 0 auto;
 }
+
 .level1 .key-btn {
     padding: 16px 0;
-    background: #fff;
-    border: 2px solid #8d6e63;
-    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.75);
+    border: 2px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.2s;
+    transition: 0.22s ease;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 4px;
 }
-.level1 .key-btn:hover { background: #efebe9; }
-.level1 .key-btn:disabled { background: #f5f5f5; opacity: 0.5; }
-.level1 .key-btn svg { width: 32px; height: 32px; }
-.level1 .key-btn .key-name { font-size: 12px; color: #5d4037; }
-.level1 .action-row { display: flex; gap: 10px; margin: 16px 0; }
-.level1 .action-row .btn { flex: 1; margin: 0; }
-.level1 .feedback.success { background: #e8f5e9; color: #2e7d32; }
-.level1 .feedback.fail { background: #ffebee; color: #c62828; }
-.level1 .chat-box { border: 1px solid #d7ccc8; background: #fff; }
-.level1 .chat-msg.self { color: #5d4037; }
-.level1 .chat-msg.peer { color: #2e7d32; }
-.level1 .divider { color: #8d6e63; }
-.level1 .divider::before, .level1 .divider::after { background: #d7ccc8; }
-.level1 .level-card {
-    background: #fff8e1;
-    border-color: #8d6e63;
-    color: #5d4037;
-}
-.level1 .level-card.active {
-    background: #d7ccc8;
-    border-color: #5d4037;
-}
-.level1 .win-content { background: #fff8e1; color: #3e2723; }
-.level1 .win-content h2 { color: #2e7d32; }
 
-/* ========== 第二关样式 ========== */
+.level1 .key-btn:hover {
+    border-color: var(--antique);
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow);
+}
+
+.level1 .key-btn:disabled {
+    background: rgba(245, 245, 245, 0.85);
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.level1 .key-btn svg {
+    width: 32px;
+    height: 32px;
+}
+
+.level1 .key-btn .key-name {
+    font-size: 12px;
+    color: #5A4835;
+}
+
+/* ========== 第二关整体浅色系统一 ========== */
 .level2 {
-    background: #2b1d18;
-    color: #fff8e1;
-    background-image: 
-        radial-gradient(ellipse at top, rgba(212, 175, 55, 0.1) 0%, transparent 60%),
-        linear-gradient(180deg, #2b1d18 0%, #1a1210 100%);
+    background:
+        radial-gradient(circle at 8% 8%, rgba(200, 168, 106, 0.08) 0%, transparent 50%),
+        linear-gradient(135deg, #F7EFE3 0%, #EFE3D1 45%, #F5EAD8 100%);
 }
-.level2 .container {
-    background: linear-gradient(180deg, #3a2820 0%, #2e1f1a 100%);
-    border: 2px solid #8d6e63;
-    box-shadow: 0 0 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05);
-}
-.level2 .title {
-    color: #d4af37;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-}
-.level2 .subtitle {
-    text-align: center;
-    font-size: 14px;
-    color: #a1887f;
-    margin-top: -16px;
-    margin-bottom: 24px;
-    letter-spacing: 4px;
-}
-.level2 .btn {
-    background: linear-gradient(180deg, #8d6e63 0%, #6d4c41 100%);
-    color: #fff8e1;
-    border: 1px solid #a1887f;
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-}
-.level2 .btn:hover {
-    background: linear-gradient(180deg, #a1887f 0%, #8d6e63 100%);
-}
-.level2 .btn-secondary {
-    background: linear-gradient(180deg, #5d4037 0%, #4e342e 100%);
-}
-.level2 .btn-secondary:hover {
-    background: linear-gradient(180deg, #6d4c41 0%, #5d4037 100%);
-}
-.level2 .input {
-    border: 1px solid #8d6e63;
-    background: #1a1210;
-    color: #d4af37;
-}
-.level2 .section-title {
-    color: #d4af37;
-    border-color: #5d4037;
-}
-.level2 .status {
-    background: rgba(141, 110, 99, 0.2);
-    border: 1px solid #5d4037;
-    color: #d7ccc8;
-}
-.level2 .room-id { color: #d4af37; }
-.level2 .role-card {
-    border: 2px solid #5d4037;
-    background: rgba(62, 39, 35, 0.6);
-    color: #fff8e1;
-}
-.level2 .role-card.active {
-    border-color: #d4af37;
-    background: rgba(212, 175, 55, 0.15);
-    box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
-}
-.level2 .role-card p { color: #a1887f; }
 
-/* 博古架密码槽 */
+.level2 .container {
+    background:
+        linear-gradient(180deg, rgba(255, 247, 234, 0.96) 0%, rgba(247, 239, 227, 0.98) 100%);
+    border: 1px solid rgba(139, 115, 85, 0.18);
+    box-shadow:
+        0 12px 28px rgba(46, 31, 24, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+
+.level2 .title {
+    color: #1A1A1A;
+}
+
+.level2 .subtitle {
+    color: var(--bronze);
+}
+
+.level2 .section-title {
+    color: #1A1A1A;
+    border-bottom-color: rgba(139, 115, 85, 0.25);
+}
+
+.level2 .status {
+    background: rgba(139, 115, 85, 0.06);
+    color: #5A4835;
+}
+
+.level2 .room-id {
+    color: var(--cinnabar);
+}
+
+.level2 .role-card {
+    background: rgba(255, 255, 255, 0.65);
+    border-color: transparent;
+}
+
+.level2 .role-card.active {
+    border-color: var(--antique);
+    background:
+        linear-gradient(135deg, rgba(200, 168, 106, 0.14) 0%, rgba(200, 168, 106, 0.04) 100%);
+}
+
+.level2 .rules-list {
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(247, 239, 227, 0.65) 100%);
+    border-left-color: var(--antique);
+    color: #5A4835;
+}
+
+.level2 .chat-box {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(139, 115, 85, 0.25);
+    color: #5A4835;
+}
+
+.level2 .chat-msg.self {
+    color: #1A1A1A;
+}
+
+.level2 .chat-msg.peer {
+    color: #6B5344;
+}
+
+.level2 .divider {
+    color: var(--bronze);
+}
+
+.level2 .divider::before,
+.level2 .divider::after {
+    background: linear-gradient(90deg, transparent, rgba(139, 115, 85, 0.25), transparent);
+}
+
+.level2 .level-card {
+    background: rgba(255, 255, 255, 0.65);
+    border-color: transparent;
+}
+
+.level2 .level-card.active {
+    border-color: var(--antique);
+    background:
+        linear-gradient(135deg, rgba(200, 168, 106, 0.14) 0%, rgba(200, 168, 106, 0.04) 100%);
+}
+
+.level2 .win-content {
+    background:
+        linear-gradient(180deg, #FFF7EA 0%, #F7EFE3 100%);
+    border-color: rgba(139, 115, 85, 0.25);
+}
+
+.level2 .win-content h2 {
+    color: #1A1A1A;
+}
+
+/* ========== 第二关博古架密码槽 ========== */
 .level2 .shelf-grid {
     display: flex;
     justify-content: center;
     gap: 12px;
     margin-bottom: 20px;
 }
+
 .level2 .shelf-slot {
     width: 72px;
     height: 90px;
-    border: 2px solid #5d4037;
-    border-radius: 4px;
-    background: linear-gradient(180deg, #2b1d18 0%, #1a1210 100%);
+    border: 2px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
+    background:
+        linear-gradient(180deg, #FFF7EA 0%, #F7EFE3 100%);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: 0.22s ease;
     position: relative;
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+    box-shadow:
+        inset 0 2px 6px rgba(46, 31, 24, 0.06),
+        0 4px 10px rgba(46, 31, 24, 0.08);
 }
+
 .level2 .shelf-slot:hover {
-    border-color: #8d6e63;
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5), 0 0 10px rgba(212, 175, 55, 0.1);
+    border-color: var(--antique);
+    transform: translateY(-2px);
+    box-shadow:
+        inset 0 2px 6px rgba(46, 31, 24, 0.06),
+        0 8px 16px rgba(46, 31, 24, 0.12);
 }
-.level2 .shelf-slot:empty { cursor: default; }
+
+.level2 .shelf-slot:empty {
+    cursor: default;
+}
+
 .level2 .shelf-slot:empty:hover {
-    border-color: #5d4037;
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.5);
+    border-color: rgba(139, 115, 85, 0.25);
+    transform: none;
+    box-shadow:
+        inset 0 2px 6px rgba(46, 31, 24, 0.06),
+        0 4px 10px rgba(46, 31, 24, 0.08);
 }
-.level2 .slot-relic { font-size: 28px; margin-bottom: 4px; }
+
+.level2 .slot-relic {
+    font-size: 30px;
+    margin-bottom: 4px;
+    filter: drop-shadow(0 1px 2px rgba(46, 31, 24, 0.12));
+}
+
 .level2 .slot-beast {
-    font-size: 18px;
-    opacity: 0.6;
+    font-size: 20px;
+    opacity: 0.55;
     filter: blur(0.3px);
+    transition: 0.22s ease;
 }
+
 .level2 .shelf-slot.win .slot-beast {
     opacity: 1;
     filter: none;
-    color: #d4af37;
-    text-shadow: 0 0 8px rgba(212, 175, 55, 0.6);
+    color: var(--antique);
+    text-shadow: 0 0 8px rgba(200, 168, 106, 0.35);
 }
 
-/* 古董卡片 */
+/* ========== 第二关古董卡片：细化质地 ========== */
 .level2 .relics-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     margin-bottom: 20px;
 }
+
 .level2 .relic-card {
-    padding: 12px 8px;
-    background: linear-gradient(180deg, #3a2820 0%, #2e1f1a 100%);
-    border: 1px solid #5d4037;
-    border-radius: 6px;
+    padding: 14px 10px;
+    border-radius: 10px;
     text-align: center;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: 0.22s ease;
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    background: rgba(255, 255, 255, 0.75);
+    position: relative;
+    overflow: hidden;
 }
+
+.level2 .relic-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background:
+        linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, transparent 50%);
+}
+
 .level2 .relic-card:hover {
-    border-color: #d4af37;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    border-color: var(--antique);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(46, 31, 24, 0.12);
 }
-.level2 .relic-card.disabled { opacity: 0.4; cursor: not-allowed; }
-.level2 .relic-icon { font-size: 32px; margin-bottom: 6px; }
-.level2 .relic-name { font-weight: bold; font-size: 13px; margin-bottom: 4px; color: #fff8e1; }
-.level2 .relic-meta { font-size: 11px; color: #a1887f; line-height: 1.5; }
+
+.level2 .relic-card.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.level2 .relic-icon {
+    font-size: 34px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 1px 3px rgba(46, 31, 24, 0.15));
+}
+
+.level2 .relic-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #1A1A1A;
+}
+
+.level2 .relic-meta {
+    font-size: 12px;
+    color: #6B5344;
+    line-height: 1.6;
+}
+
 .level2 .relic-beast {
-    margin-top: 6px;
-    padding-top: 6px;
-    border-top: 1px dashed #5d4037;
-    font-size: 11px;
-    color: #d4af37;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(139, 115, 85, 0.25);
+    font-size: 12px;
+    color: var(--cinnabar);
+    line-height: 1.5;
 }
 
-/* 规则区 - 竹简质感 */
-.level2 .rules-list {
-    background: linear-gradient(180deg, #4a3728 0%, #3a2820 100%);
-    border-color: #8d6e63;
-    color: #d7ccc8;
-    border-radius: 4px;
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-}
-.level2 .hint-rule {
-    color: #d4af37;
-    text-shadow: 0 0 4px rgba(212, 175, 55, 0.4);
+/* 质地标签 */
+.texture-porcelain {
+    background:
+        linear-gradient(135deg, rgba(214, 234, 248, 0.25) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-color: rgba(135, 196, 235, 0.35);
 }
 
-.level2 .feedback.success { background: rgba(46, 125, 50, 0.2); color: #81c784; border: 1px solid #2e7d32; }
-.level2 .feedback.fail { background: rgba(198, 40, 40, 0.2); color: #ef9a9a; border: 1px solid #c62828; }
-
-.level2 .chat-box {
-    border: 1px solid #5d4037;
-    background: rgba(26, 18, 16, 0.6);
-    color: #d7ccc8;
-}
-.level2 .chat-msg.self { color: #d4af37; }
-.level2 .chat-msg.peer { color: #81c784; }
-
-.level2 .divider { color: #5d4037; }
-.level2 .divider::before, .level2 .divider::after { background: #5d4037; }
-
-.level2 .level-card {
-    background: linear-gradient(180deg, #3a2820 0%, #2e1f1a 100%);
-    border-color: #5d4037;
-    color: #fff8e1;
-}
-.level2 .level-card.active {
-    border-color: #d4af37;
-    background: rgba(212, 175, 55, 0.15);
+.texture-bronze {
+    background:
+        linear-gradient(135deg, rgba(139, 115, 85, 0.18) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-color: rgba(139, 115, 85, 0.35);
 }
 
-.level2 .win-content {
-    background: linear-gradient(180deg, #3a2820 0%, #2e1f1a 100%);
-    border: 2px solid #d4af37;
-    color: #fff8e1;
-    box-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
+.texture-jade {
+    background:
+        linear-gradient(135deg, rgba(168, 201, 186, 0.25) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-color: rgba(168, 201, 186, 0.35);
 }
-.level2 .win-content h2 { color: #d4af37; }
 
-.action-row { display: flex; gap: 10px; margin: 16px 0; }
-.action-row .btn { flex: 1; margin: 0; }
+.texture-copper {
+    background:
+        linear-gradient(135deg, rgba(184, 115, 51, 0.18) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-color: rgba(184, 115, 51, 0.35);
+}
 
-svg.plant-icon { width: 100%; height: 100%; }
+.texture-paper {
+    background:
+        linear-gradient(135deg, rgba(248, 241, 229, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-color: rgba(200, 168, 106, 0.25);
+}
 </style>
 </head>
 <body class="level1">
@@ -510,9 +851,10 @@ svg.plant-icon { width: 100%; height: 100%; }
                 <h3>第一关</h3>
                 <p>面值密码锁</p>
             </div>
-            <div class="level-card" onclick="pickLevel(2)">
+            <div class="level-card" id="level2-card" onclick="pickLevel(2)">
                 <h3>第二关</h3>
                 <p>瑞兽镇阵</p>
+                <div class="lock-icon" id="level2-lock">🔒</div>
             </div>
         </div>
         <div class="status">两人协作，信息不对称解谜</div>
@@ -715,89 +1057,202 @@ svg.plant-icon { width: 100%; height: 100%; }
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script>
 const SERVER_URL = location.origin;
+
 let currentLevel = 1;
 let role = null;
 let socket = null;
 let roomId = null;
-let isHost = false; // 房主身份标记：仅房主生成谜题
+let isHost = false;
 
-// ========== 通用素材 ==========
+let level1Passed = localStorage.getItem("level1Passed") === "true";
+
+// ========== 素材 ==========
 const ALL_PLANTS = {
-    plum: { name: '梅花', value: 3, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><circle cx="20" cy="14" r="6" fill="#f8bbd0"/><circle cx="12" cy="22" r="6" fill="#f8bbd0"/><circle cx="28" cy="22" r="6" fill="#f8bbd0"/><circle cx="16" cy="30" r="6" fill="#f8bbd0"/><circle cx="24" cy="30" r="6" fill="#f8bbd0"/><circle cx="20" cy="22" r="4" fill="#ffeb3b"/></svg>' },
-    orchid: { name: '兰花', value: 8, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><path d="M20 8 L20 32" stroke="#81c784" stroke-width="2"/><ellipse cx="20" cy="12" rx="8" ry="5" fill="#ce93d8"/><ellipse cx="12" cy="18" rx="6" ry="4" fill="#e1bee7"/><ellipse cx="28" cy="18" rx="6" ry="4" fill="#e1bee7"/><ellipse cx="20" cy="24" rx="7" ry="4" fill="#ce93d8"/></svg>' },
-    bamboo: { name: '竹子', value: 5, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><rect x="18" y="6" width="4" height="28" fill="#81c784"/><line x1="18" y1="14" x2="22" y2="14" stroke="#558b2f" stroke-width="2"/><line x1="18" y1="22" x2="22" y2="22" stroke="#558b2f" stroke-width="2"/><line x1="18" y1="30" x2="22" y2="30" stroke="#558b2f" stroke-width="2"/><path d="M22 10 L30 8 M22 18 L30 16 M22 26 L30 24" stroke="#81c784" stroke-width="2" fill="none"/></svg>' },
-    chrysanthemum: { name: '菊花', value: 1, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><g fill="#ffcc80"><circle cx="20" cy="12" r="4"/><circle cx="28" cy="16" r="4"/><circle cx="30" cy="24" r="4"/><circle cx="24" cy="30" r="4"/><circle cx="16" cy="30" r="4"/><circle cx="10" cy="24" r="4"/><circle cx="12" cy="16" r="4"/></g><circle cx="20" cy="22" r="5" fill="#ff8f00"/></svg>' },
-    peony: { name: '牡丹', value: 6, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><g fill="#f48fb1"><circle cx="20" cy="14" r="5"/><circle cx="13" cy="19" r="5"/><circle cx="27" cy="19" r="5"/><circle cx="16" cy="26" r="5"/><circle cx="24" cy="26" r="5"/></g><circle cx="20" cy="20" r="4" fill="#ffeb3b"/></svg>' },
-    lotus: { name: '荷花', value: 4, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><ellipse cx="20" cy="16" rx="10" ry="6" fill="#81d4fa"/><ellipse cx="14" cy="22" rx="6" ry="4" fill="#b3e5fc"/><ellipse cx="26" cy="22" rx="6" ry="4" fill="#b3e5fc"/><ellipse cx="20" cy="26" rx="7" ry="4" fill="#81d4fa"/><circle cx="20" cy="20" r="3" fill="#ffeb3b"/></svg>' }
+    plum: { name: "梅花", value: 3, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><circle cx="20" cy="14" r="6" fill="#f8bbd0"/><circle cx="12" cy="22" r="6" fill="#f8bbd0"/><circle cx="28" cy="22" r="6" fill="#f8bbd0"/><circle cx="16" cy="30" r="6" fill="#f8bbd0"/><circle cx="24" cy="30" r="6" fill="#f8bbd0"/><circle cx="20" cy="22" r="4" fill="#ffeb3b"/></svg>' },
+    orchid: { name: "兰花", value: 8, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><path d="M20 8 L20 32" stroke="#81c784" stroke-width="2"/><ellipse cx="20" cy="12" rx="8" ry="5" fill="#ce93d8"/><ellipse cx="12" cy="18" rx="6" ry="4" fill="#e1bee7"/><ellipse cx="28" cy="18" rx="6" ry="4" fill="#e1bee7"/><ellipse cx="20" cy="24" rx="7" ry="4" fill="#ce93d8"/></svg>' },
+    bamboo: { name: "竹子", value: 5, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><rect x="18" y="6" width="4" height="28" fill="#81c784"/><line x1="18" y1="14" x2="22" y2="14" stroke="#558b2f" stroke-width="2"/><line x1="18" y1="22" x2="22" y2="22" stroke="#558b2f" stroke-width="2"/><line x1="18" y1="30" x2="22" y2="30" stroke="#558b2f" stroke-width="2"/><path d="M22 10 L30 8 M22 18 L30 16 M22 26 L30 24" stroke="#81c784" stroke-width="2" fill="none"/></svg>' },
+    chrysanthemum: { name: "菊花", value: 1, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><g fill="#ffcc80"><circle cx="20" cy="12" r="4"/><circle cx="28" cy="16" r="4"/><circle cx="30" cy="24" r="4"/><circle cx="24" cy="30" r="4"/><circle cx="16" cy="30" r="4"/><circle cx="10" cy="24" r="4"/><circle cx="12" cy="16" r="4"/></g><circle cx="20" cy="22" r="5" fill="#ff8f00"/></svg>' },
+    peony: { name: "牡丹", value: 6, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><g fill="#f48fb1"><circle cx="20" cy="14" r="5"/><circle cx="13" cy="19" r="5"/><circle cx="27" cy="19" r="5"/><circle cx="16" cy="26" r="5"/><circle cx="24" cy="26" r="5"/></g><circle cx="20" cy="20" r="4" fill="#ffeb3b"/></svg>' },
+    lotus: { name: "荷花", value: 4, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><ellipse cx="20" cy="16" rx="10" ry="6" fill="#81d4fa"/><ellipse cx="14" cy="22" rx="6" ry="4" fill="#b3e5fc"/><ellipse cx="26" cy="22" rx="6" ry="4" fill="#b3e5fc"/><ellipse cx="20" cy="26" rx="7" ry="4" fill="#81d4fa"/><circle cx="20" cy="20" r="3" fill="#ffeb3b"/></svg>' }
 };
 
-// 第二关古董素材
 const ALL_RELICS = {
-    vase: { 
-        name: '青花龙纹瓶', material: '瓷', type: '容器', 
-        beast: '青龙', element: '木', fortune: '瑞兽',
-        icon: '🏺', beastIcon: '🐉'
+    vase: {
+        name: "青花龙纹瓶",
+        material: "瓷",
+        type: "容器",
+        beast: "青龙",
+        element: "木",
+        fortune: "瑞兽",
+        icon: "🏺",
+        beastIcon: "🐉",
+        texture: "porcelain"
     },
-    furnace: { 
-        name: '铜铸玄武炉', material: '铜', type: '容器', 
-        beast: '玄武', element: '水', fortune: '瑞兽',
-        icon: '🪔', beastIcon: '🐢'
+    furnace: {
+        name: "铜铸玄武炉",
+        material: "铜",
+        type: "容器",
+        beast: "玄武",
+        element: "水",
+        fortune: "瑞兽",
+        icon: "🪔",
+        beastIcon: "🐢",
+        texture: "bronze"
     },
-    plaque: { 
-        name: '麒麟玉佩牌', material: '玉', type: '饰器', 
-        beast: '麒麟', element: '土', fortune: '瑞兽',
-        icon: '🎴', beastIcon: '🦄'
+    plaque: {
+        name: "麒麟玉佩牌",
+        material: "玉",
+        type: "饰器",
+        beast: "麒麟",
+        element: "土",
+        fortune: "瑞兽",
+        icon: "🎴",
+        beastIcon: "🦄",
+        texture: "jade"
     },
-    mirror: { 
-        name: '朱雀菱花镜', material: '铜', type: '饰器', 
-        beast: '朱雀', element: '火', fortune: '瑞兽',
-        icon: '🪞', beastIcon: '🔥'
+    mirror: {
+        name: "朱雀菱花镜",
+        material: "铜",
+        type: "饰器",
+        beast: "朱雀",
+        element: "火",
+        fortune: "瑞兽",
+        icon: "🪞",
+        beastIcon: "🔥",
+        texture: "copper"
     },
-    ding: { 
-        name: '饕餮青铜鼎', material: '铜', type: '容器', 
-        beast: '饕餮', element: '金', fortune: '凶兽',
-        icon: '🍶', beastIcon: '👹'
+    ding: {
+        name: "饕餮青铜鼎",
+        material: "铜",
+        type: "容器",
+        beast: "饕餮",
+        element: "金",
+        fortune: "凶兽",
+        icon: "🍶",
+        beastIcon: "👹",
+        texture: "bronze"
     },
-    paper: { 
-        name: '白虎玉镇纸', material: '玉', type: '文房', 
-        beast: '白虎', element: '金', fortune: '瑞兽',
-        icon: '📜', beastIcon: '🐯'
+    paper: {
+        name: "白虎玉镇纸",
+        material: "玉",
+        type: "文房",
+        beast: "白虎",
+        element: "金",
+        fortune: "瑞兽",
+        icon: "📜",
+        beastIcon: "🐯",
+        texture: "paper"
     }
 };
 
+const BEAST_RULES = [
+    { text: "阵法中恰好有1只金属性神兽", check: order => order.filter(k => ALL_RELICS[k].element === "金").length === 1 },
+    { text: "木属性和火属性必须同时入选", check: order => order.some(k => ALL_RELICS[k].element === "木") && order.some(k => ALL_RELICS[k].element === "火") },
+    { text: "凶兽不能出现在第1、第4位", check: order => ALL_RELICS[order[0]].fortune !== "凶兽" && ALL_RELICS[order[3]].fortune !== "凶兽" },
+    { text: "水属性神兽只能在第2或第3位", check: order => {
+        const idx = order.findIndex(k => ALL_RELICS[k].element === "水");
+        return idx === -1 || idx === 1 || idx === 2;
+    }},
+    { text: "麒麟和青龙不能同时出现", check: order => !(order.includes("plaque") && order.includes("vase")) },
+    { text: "瑞兽至少有3只", check: order => order.filter(k => ALL_RELICS[k].fortune === "瑞兽").length >= 3 }
+];
+
+const RELIC_RULES = [
+    { text: "第1位必须是容器类", check: order => ALL_RELICS[order[0]].type === "容器" },
+    { text: "铜器最多出现2件", check: order => order.filter(k => ALL_RELICS[k].material === "铜").length <= 2 },
+    { text: "玉器和瓷器不能相邻", check: order => {
+        for (let i = 0; i < 3; i++) {
+            const a = ALL_RELICS[order[i]].material;
+            const b = ALL_RELICS[order[i+1]].material;
+            if ((a === "玉" && b === "瓷") || (a === "瓷" && b === "玉")) return false;
+        }
+        return true;
+    }},
+    { text: "饰器类只能在第2或第4位", check: order => {
+        for (let i = 0; i < 4; i++) {
+            if (ALL_RELICS[order[i]].type === "饰器" && i !== 1 && i !== 3) return false;
+        }
+        return true;
+    }},
+    { text: "文房类一定不在阵法中", check: order => !order.some(k => ALL_RELICS[k].type === "文房") },
+    { text: "相同材质的器物不能相邻", check: order => {
+        for (let i = 0; i < 3; i++) {
+            if (ALL_RELICS[order[i]].material === ALL_RELICS[order[i+1]].material) return false;
+        }
+        return true;
+    }}
+];
+
+const BEAST_HINTS = [
+    "饕餮不在阵法中",
+    "朱雀在偶数位",
+    "土属性神兽在第3位"
+];
+
+const RELIC_HINTS = [
+    "第4位是玉器",
+    "炉类必定入选",
+    "牌类在奇数位"
+];
+
 // ========== 关卡选择 ==========
+function refreshLevelLock() {
+    const level2Card = document.getElementById("level2-card");
+    const level2Lock = document.getElementById("level2-lock");
+
+    if (level1Passed) {
+        level2Card.classList.remove("locked");
+        level2Lock.classList.add("hidden");
+    } else {
+        level2Card.classList.add("locked");
+        level2Lock.classList.remove("hidden");
+    }
+}
+
 function pickLevel(level) {
+    if (level === 2 && !level1Passed) {
+        alert("请先通关第一关，再进入第二关。");
+        return;
+    }
+
     currentLevel = level;
-    document.body.className = level === 1 ? 'level1' : 'level2';
-    document.querySelectorAll('.level-card').forEach((card, i) => {
-        card.classList.toggle('active', i === level - 1);
+    document.body.className = level === 1 ? "level1" : "level2";
+
+    document.querySelectorAll(".level-card").forEach((card, i) => {
+        card.classList.toggle("active", i === level - 1);
     });
+
     setTimeout(() => {
-        document.getElementById('page-level').classList.add('hidden');
-        document.getElementById('page-role').classList.remove('hidden');
+        document.getElementById("page-level").classList.add("hidden");
+        document.getElementById("page-role").classList.remove("hidden");
         renderRoleSelect();
     }, 300);
 }
 
 function backToLevelSelect() {
     if (socket) {
-        socket.emit('cancel-match', role);
+        socket.emit("cancel-match", role);
         socket.disconnect();
         socket = null;
     }
+
     role = null;
     roomId = null;
     isHost = false;
-    document.getElementById('win-modal').classList.add('hidden');
-    document.querySelectorAll('[id^="game"]').forEach(el => el.classList.add('hidden'));
-    document.getElementById('page-room').classList.add('hidden');
-    document.getElementById('page-role').classList.add('hidden');
-    document.getElementById('page-level').classList.remove('hidden');
+
+    document.getElementById("win-modal").classList.add("hidden");
+    document.querySelectorAll("[id^=game]").forEach(el => el.classList.add("hidden"));
+    document.getElementById("page-room").classList.add("hidden");
+    document.getElementById("page-role").classList.add("hidden");
+    document.getElementById("page-level").classList.remove("hidden");
+
+    refreshLevelLock();
 }
 
 function renderRoleSelect() {
-    const box = document.getElementById('role-select-box');
-    const desc = document.getElementById('role-desc');
+    const box = document.getElementById("role-select-box");
+    const desc = document.getElementById("role-desc");
+
     if (currentLevel === 1) {
         box.innerHTML = `
             <div class="role-card" onclick="pickRole('accountant')">
@@ -809,7 +1264,7 @@ function renderRoleSelect() {
                 <p>掌握密码规则<br>负责操作验证</p>
             </div>
         `;
-        desc.textContent = '目标：协作，打开密码门';
+        desc.textContent = "目标：协作，打开密码门";
     } else {
         box.innerHTML = `
             <div class="role-card" onclick="pickRole('accountant')">
@@ -821,106 +1276,108 @@ function renderRoleSelect() {
                 <p>掌握博古架规制<br>负责摆阵启动</p>
             </div>
         `;
-        desc.textContent = '目标：瑞兽归位，开启暗格';
+        desc.textContent = "目标：瑞兽归位，开启暗格";
     }
 }
 
 function pickRole(r) {
     role = r;
-    document.querySelectorAll('.role-card').forEach(card => card.classList.remove('active'));
-    event.currentTarget.classList.add('active');
+    document.querySelectorAll(".role-card").forEach(card => card.classList.remove("active"));
+    event.currentTarget.classList.add("active");
+
     setTimeout(() => {
-        document.getElementById('page-role').classList.add('hidden');
-        document.getElementById('page-room').classList.remove('hidden');
+        document.getElementById("page-role").classList.add("hidden");
+        document.getElementById("page-room").classList.remove("hidden");
         initSocket();
     }, 300);
 }
 
 function backToRole() {
     if (socket) {
-        socket.emit('cancel-match', role);
+        socket.emit("cancel-match", role);
         socket.disconnect();
         socket = null;
     }
+
     role = null;
     roomId = null;
     isHost = false;
-    document.getElementById('page-room').classList.add('hidden');
-    document.getElementById('page-role').classList.remove('hidden');
-    document.getElementById('room-box').classList.add('hidden');
-    document.getElementById('match-box').classList.add('hidden');
+
+    document.getElementById("page-room").classList.add("hidden");
+    document.getElementById("page-role").classList.remove("hidden");
+    document.getElementById("room-box").classList.add("hidden");
+    document.getElementById("match-box").classList.add("hidden");
 }
 
-// ========== Socket 通用通信 ==========
+// ========== Socket ==========
 function initSocket() {
-    socket = io(SERVER_URL, { transports: ['websocket', 'polling'] });
-    
-    socket.on('queue-update', (data) => {
-        document.getElementById('match-same-count').textContent = data.yourRoleWaitNum;
-        document.getElementById('match-peer-count').textContent = data.peerRoleWaitNum;
+    socket = io(SERVER_URL, { transports: ["websocket", "polling"] });
+
+    socket.on("queue-update", data => {
+        document.getElementById("match-same-count").textContent = data.yourRoleWaitNum;
+        document.getElementById("match-peer-count").textContent = data.peerRoleWaitNum;
     });
 
-    socket.on('match-success', (data) => {
+    socket.on("match-success", data => {
         roomId = data.roomId;
-        isHost = role === 'accountant'; // 匹配模式：账房为房主
-        document.getElementById('match-status').textContent = '匹配成功，正在进入...';
+        isHost = role === "accountant";
+        document.getElementById("match-status").textContent = "匹配成功，正在进入...";
         enterGameByHost();
     });
 
-    socket.on('room-created', (id) => {
+    socket.on("room-created", id => {
         roomId = id;
-        isHost = true; // 创建房间者为房主
-        document.getElementById('room-id').textContent = id;
-        document.getElementById('room-box').classList.remove('hidden');
+        isHost = true;
+        document.getElementById("room-id").textContent = id;
+        document.getElementById("room-box").classList.remove("hidden");
     });
 
-    socket.on('guest-joined', (peerRole) => {
-        document.getElementById('room-status').textContent = '对方已加入，连接成功';
+    socket.on("guest-joined", () => {
+        document.getElementById("room-status").textContent = "对方已加入，连接成功";
         enterGameByHost();
     });
 
-    socket.on('room-joined', () => {
-        isHost = false; // 加入房间者为客人
-        document.getElementById('room-status').textContent = '连接成功，正在进入...';
+    socket.on("room-joined", () => {
+        isHost = false;
+        document.getElementById("room-status").textContent = "连接成功，正在进入...";
         setTimeout(() => enterGameByGuest(), 300);
     });
 
-    socket.on('game-data-received', (data) => {
-        handleGameData(data);
-    });
+    socket.on("game-data-received", data => handleGameData(data));
 
-    socket.on('error', (msg) => alert(msg));
-    socket.on('peer-left', () => {
-        alert('对方已断开连接');
+    socket.on("error", msg => alert(msg));
+
+    socket.on("peer-left", () => {
+        alert("对方已断开连接");
         backToRole();
     });
 }
 
 function startMatch() {
-    document.getElementById('match-box').classList.remove('hidden');
-    document.getElementById('match-status').textContent = '正在匹配对手...';
-    socket.emit('join-match', role);
+    document.getElementById("match-box").classList.remove("hidden");
+    document.getElementById("match-status").textContent = "正在匹配对手...";
+    socket.emit("join-match", role);
 }
 
 function cancelMatch() {
-    socket.emit('cancel-match', role);
-    document.getElementById('match-box').classList.add('hidden');
+    socket.emit("cancel-match", role);
+    document.getElementById("match-box").classList.add("hidden");
 }
 
 function createRoom() {
-    socket.emit('create-room', role);
+    socket.emit("create-room", role);
 }
 
 function joinRoom() {
-    const id = document.getElementById('join-input').value.trim();
-    if (!id || id.length !== 4) return alert('请输入4位房间号');
-    socket.emit('join-room', id, role);
+    const id = document.getElementById("join-input").value.trim();
+    if (!id || id.length !== 4) return alert("请输入4位房间号");
+    socket.emit("join-room", id, role);
     roomId = id;
 }
 
 function sendGameData(msg) {
     if (socket && roomId) {
-        socket.emit('send-game-data', roomId, msg);
+        socket.emit("send-game-data", roomId, msg);
     }
 }
 
@@ -932,7 +1389,7 @@ function handleGameData(msg) {
     }
 }
 
-// ========== 第一关游戏逻辑 ==========
+// ========== 第一关 ==========
 let seq1 = [];
 let attempts1 = 5;
 let won1 = false;
@@ -944,15 +1401,16 @@ function generatePuzzle1() {
     const keys = Object.keys(ALL_PLANTS);
     const shuffled = keys.sort(() => Math.random() - 0.5);
     const correctKeys = shuffled.slice(0, 4);
-    const correctOrder = [...correctKeys].sort((a,b) => ALL_PLANTS[b].value - ALL_PLANTS[a].value);
-    
+    const correctOrder = [...correctKeys].sort((a, b) => ALL_PLANTS[b].value - ALL_PLANTS[a].value);
+
     const rules = [];
     const vals = correctOrder.map(k => ALL_PLANTS[k].value);
     rules.push(`第一位面值 > 第四位面值`);
     rules.push(`第二位面值 = 第一位 + 第三位 的一半`);
-    rules.push(`四张面值总和 = ${vals.reduce((a,b)=>a+b,0)} 分`);
-    
+    rules.push(`四张面值总和 = ${vals.reduce((a, b) => a + b, 0)} 分`);
+
     const extraRule = `最贵的邮票是${ALL_PLANTS[correctOrder[0]].name}`;
+
     return { allKeys: keys, correctOrder: correctOrder, rules: rules, extraRule: extraRule };
 }
 
@@ -965,7 +1423,8 @@ function resetState1() {
 }
 
 function enterGameByHost() {
-    resetState1(); // 进入前先重置状态
+    resetState1();
+
     if (currentLevel === 1) {
         puzzle1 = generatePuzzle1();
         setTimeout(() => enterGame1(), 500);
@@ -977,7 +1436,8 @@ function enterGameByHost() {
 }
 
 function enterGameByGuest() {
-    resetState1(); // 进入前先重置状态
+    resetState1();
+
     if (currentLevel === 1) {
         enterGame1();
     } else {
@@ -987,29 +1447,34 @@ function enterGameByGuest() {
 }
 
 function enterGame1() {
-    document.getElementById('page-room').classList.add('hidden');
-    if (role === 'accountant') {
-        document.getElementById('game1-accountant').classList.remove('hidden');
+    document.getElementById("page-room").classList.add("hidden");
+
+    if (role === "accountant") {
+        document.getElementById("game1-accountant").classList.remove("hidden");
         renderAcc1Stamps();
     } else {
-        document.getElementById('game1-shopkeeper').classList.remove('hidden');
+        document.getElementById("game1-shopkeeper").classList.remove("hidden");
         if (puzzle1) {
             renderShop1Keys();
             renderShop1Rules();
-            document.getElementById('shop1-status').textContent = '✅ 已连接 · 可以开始操作';
+            document.getElementById("shop1-status").textContent = "✅ 已连接 · 可以开始操作";
         } else {
-            document.getElementById('shop1-status').textContent = '⏳ 正在同步谜题数据...';
+            document.getElementById("shop1-status").textContent = "⏳ 正在同步谜题数据...";
         }
     }
-    if (puzzle1) sendGameData({ type: 'puzzle1', data: puzzle1 });
+
+    if (puzzle1) {
+        sendGameData({ type: "puzzle1", data: puzzle1 });
+    }
 }
 
 function renderAcc1Stamps() {
-    const grid = document.getElementById('acc1-stamps');
-    grid.innerHTML = '';
+    const grid = document.getElementById("acc1-stamps");
+    grid.innerHTML = "";
+
     puzzle1.allKeys.forEach(key => {
-        const card = document.createElement('div');
-        card.className = 'stamp-card';
+        const card = document.createElement("div");
+        card.className = "stamp-card";
         card.innerHTML = `
             <div class="icon">${ALL_PLANTS[key].svg}</div>
             <div class="name">${ALL_PLANTS[key].name}</div>
@@ -1020,31 +1485,35 @@ function renderAcc1Stamps() {
 }
 
 function renderShop1Rules() {
-    const list = document.getElementById('shop1-rules');
-    list.innerHTML = '';
+    const list = document.getElementById("shop1-rules");
+    list.innerHTML = "";
+
     puzzle1.rules.forEach(r => {
-        const li = document.createElement('li');
+        const li = document.createElement("li");
         li.textContent = r;
         list.appendChild(li);
     });
+
     if (extraRule1) {
-        const li = document.createElement('li');
-        li.className = 'hint-rule';
-        li.textContent = '✨ ' + puzzle1.extraRule;
+        const li = document.createElement("li");
+        li.className = "hint-rule";
+        li.textContent = "✨ " + puzzle1.extraRule;
         list.appendChild(li);
     }
 }
 
 function renderShop1Keys() {
-    const grid = document.getElementById('keys1-grid');
-    grid.innerHTML = '';
+    const grid = document.getElementById("keys1-grid");
+    grid.innerHTML = "";
+
     puzzle1.allKeys.forEach(key => {
-        const btn = document.createElement('button');
-        btn.className = 'key-btn';
+        const btn = document.createElement("button");
+        btn.className = "key-btn";
         btn.innerHTML = `${ALL_PLANTS[key].svg}<span class="key-name">${ALL_PLANTS[key].name}</span>`;
         btn.onclick = () => pressKey1(key);
         grid.appendChild(btn);
     });
+
     updateSlots1();
 }
 
@@ -1063,9 +1532,9 @@ function clearInput1() {
 }
 
 function updateSlots1() {
-    const slots = document.querySelectorAll('#code1-slots .slot');
+    const slots = document.querySelectorAll("#code1-slots .slot");
     slots.forEach((slot, i) => {
-        slot.innerHTML = seq1[i] ? ALL_PLANTS[seq1[i]].svg : '';
+        slot.innerHTML = seq1[i] ? ALL_PLANTS[seq1[i]].svg : "";
         slot.onclick = () => {
             if (seq1[i]) {
                 seq1 = seq1.slice(0, i);
@@ -1079,176 +1548,184 @@ function updateSlots1() {
 
 function submitAnswer1() {
     if (seq1.length !== 4 || won1 || attempts1 <= 0) return;
+
     attempts1--;
-    document.getElementById('shop1-attempts').textContent = attempts1;
-    
+    document.getElementById("shop1-attempts").textContent = attempts1;
+
     const correctCount = seq1.filter((k, i) => k === puzzle1.correctOrder[i]).length;
+
     if (correctCount === 4) {
         won1 = true;
-        showFeedback1('✅ 完全正确！密码解锁', 'success');
+        showFeedback1("✅ 完全正确！密码解锁", "success");
         syncState1();
-        setTimeout(() => showWin(5 - attempts1), 800);
-    } else {
-        showFeedback1(`❌ 对了 ${correctCount} 位`, 'fail');
-        const slots = document.getElementById('code1-slots');
-        slots.style.animation = 'shake 0.35s';
+
         setTimeout(() => {
-            slots.style.animation = '';
+            level1Passed = true;
+            localStorage.setItem("level1Passed", "true");
+            showWin(5 - attempts1);
+        }, 800);
+    } else {
+        showFeedback1(`❌ 对了 ${correctCount} 位`, "fail");
+
+        const slots = document.getElementById("code1-slots");
+        slots.style.animation = "shake 0.35s";
+
+        setTimeout(() => {
+            slots.style.animation = "";
             seq1 = [];
             updateSlots1();
             syncState1();
         }, 600);
-        if (attempts1 <= 0) setTimeout(() => { alert('尝试次数用尽，自动重置'); resetGame1(); }, 500);
+
+        if (attempts1 <= 0) {
+            setTimeout(() => {
+                alert("尝试次数用尽，自动重置");
+                resetGame1();
+            }, 500);
+        }
     }
-    sendGameData({ type: 'feedback1', text: `提交结果：对了 ${correctCount} 位`, type2: correctCount === 4 ? 'success' : 'fail' });
+
+    sendGameData({ type: "feedback1", text: `提交结果：对了 ${correctCount} 位`, type2: correctCount === 4 ? "success" : "fail" });
 }
 
 function showFeedback1(text, type) {
-    const fb = document.getElementById('feedback1');
+    const fb = document.getElementById("feedback1");
     fb.textContent = text;
     fb.className = `feedback ${type}`;
-    fb.classList.remove('hidden');
+    fb.classList.remove("hidden");
 }
 
 function hideFeedback1() {
-    document.getElementById('feedback1').classList.add('hidden');
+    document.getElementById("feedback1").classList.add("hidden");
 }
 
 function useHint1(who) {
-    if (who === 'acc' && hints1.acc > 0) {
+    if (who === "acc" && hints1.acc > 0) {
         const randomKey = puzzle1.allKeys[Math.floor(Math.random() * puzzle1.allKeys.length)];
         const text = `${ALL_PLANTS[randomKey].name} = ${ALL_PLANTS[randomKey].value}分`;
+
         hints1.acc--;
-        document.getElementById('acc1-hints').textContent = hints1.acc;
-        document.getElementById('acc1-hint-btn').disabled = true;
-        sendGameData({ type: 'hint-acc1', text: text });
-        addChat1(`你使用了提示：透露${text}`, 'self');
+        document.getElementById("acc1-hints").textContent = hints1.acc;
+        document.getElementById("acc1-hint-btn").disabled = true;
+
+        sendGameData({ type: "hint-acc1", text: text });
+        addChat1(`你使用了提示：透露${text}`, "self");
         syncState1();
     }
-    if (who === 'shop' && hints1.shop > 0) {
+
+    if (who === "shop" && hints1.shop > 0) {
         hints1.shop--;
         extraRule1 = true;
-        document.getElementById('shop1-hints').textContent = hints1.shop;
-        document.getElementById('shop1-hint-btn').disabled = true;
+        document.getElementById("shop1-hints").textContent = hints1.shop;
+        document.getElementById("shop1-hint-btn").disabled = true;
+
         renderShop1Rules();
-        sendGameData({ type: 'hint-shop1' });
-        addChat1('你使用了提示：解锁额外规则', 'self');
+        sendGameData({ type: "hint-shop1" });
+        addChat1("你使用了提示：解锁额外规则", "self");
         syncState1();
     }
 }
 
 function syncState1() {
-    if (role === 'shopkeeper') {
-        sendGameData({ type: 'state1', data: { 
-            seq: seq1, att: attempts1, won: won1, 
-            hints: hints1, extraRule: extraRule1
-        }});
+    if (role === "shopkeeper") {
+        sendGameData({
+            type: "state1",
+            data: { seq: seq1, att: attempts1, won: won1, hints: hints1, extraRule: extraRule1 }
+        });
     }
 }
 
 function handleMessage1(msg) {
-    if (msg.type === 'state1') {
+    if (msg.type === "state1") {
         seq1 = msg.data.seq;
         attempts1 = msg.data.att;
         won1 = msg.data.won;
         hints1 = msg.data.hints;
-        // 修复：对方的extraRule不同步给自己
-        if (role === 'accountant') {
-            document.getElementById('acc1-progress').textContent = seq1.length;
-            document.getElementById('acc1-attempts').textContent = attempts1;
-            document.getElementById('acc1-hints').textContent = hints1.acc;
-            document.getElementById('acc1-hint-btn').disabled = hints1.acc <= 0;
+
+        if (role === "accountant") {
+            document.getElementById("acc1-progress").textContent = seq1.length;
+            document.getElementById("acc1-attempts").textContent = attempts1;
+            document.getElementById("acc1-hints").textContent = hints1.acc;
+            document.getElementById("acc1-hint-btn").disabled = hints1.acc <= 0;
         }
-        if (won1) showWin(5 - attempts1);
-    } else if (msg.type === 'puzzle1') {
+
+        if (won1) {
+            level1Passed = true;
+            localStorage.setItem("level1Passed", "true");
+            showWin(5 - attempts1);
+        }
+    } else if (msg.type === "puzzle1") {
         puzzle1 = msg.data;
-        if (role === 'shopkeeper' && !document.getElementById('game1-shopkeeper').classList.contains('hidden')) {
+
+        if (role === "shopkeeper" && !document.getElementById("game1-shopkeeper").classList.contains("hidden")) {
             renderShop1Keys();
             renderShop1Rules();
-            document.getElementById('shop1-status').textContent = '✅ 已连接 · 可以开始操作';
+            document.getElementById("shop1-status").textContent = "✅ 已连接 · 可以开始操作";
         }
-    } else if (msg.type === 'reset1') {
-        // 客人收到重置：只重置状态，不生成新谜题
+    } else if (msg.type === "reset1") {
         resetState1();
-        if (role === 'shopkeeper') {
+
+        if (role === "shopkeeper") {
             renderShop1Keys();
             renderShop1Rules();
-            document.getElementById('shop1-status').textContent = '⏳ 正在同步新谜题...';
+            document.getElementById("shop1-status").textContent = "⏳ 正在同步新谜题...";
         }
-    } else if (msg.type === 'chat1') {
-        addChat1(msg.text, 'peer');
-    } else if (msg.type === 'hint-acc1') {
-        addChat1(`【系统提示】账房透露：${msg.text}`, 'peer');
-    } else if (msg.type === 'hint-shop1') {
-        addChat1('【系统提示】店堂解锁了额外规则', 'peer');
-    } else if (msg.type === 'feedback1') {
+    } else if (msg.type === "chat1") {
+        addChat1(msg.text, "peer");
+    } else if (msg.type === "hint-acc1") {
+        addChat1(`【系统提示】账房透露：${msg.text}`, "peer");
+    } else if (msg.type === "hint-shop1") {
+        addChat1("【系统提示】店堂解锁了额外规则", "peer");
+    } else if (msg.type === "feedback1") {
         showFeedback1(msg.text, msg.type2);
     }
 }
 
 function resetGame1() {
-    sendGameData({ type: 'reset1' });
+    sendGameData({ type: "reset1" });
+
     if (isHost) {
-        // 房主：重置状态+生成新谜题+发送
         resetState1();
         puzzle1 = generatePuzzle1();
-        if (role === 'accountant') {
+
+        if (role === "accountant") {
             renderAcc1Stamps();
         } else {
             renderShop1Keys();
             renderShop1Rules();
         }
-        sendGameData({ type: 'puzzle1', data: puzzle1 });
-    }
-}
 
-function resetLocal1() {
-    resetState1();
-    puzzle1 = generatePuzzle1();
-    
-    document.getElementById('win-modal').classList.add('hidden');
-    hideFeedback1();
-    if (role === 'accountant') {
-        document.getElementById('acc1-progress').textContent = 0;
-        document.getElementById('acc1-attempts').textContent = 5;
-        document.getElementById('acc1-hints').textContent = 1;
-        document.getElementById('acc1-hint-btn').disabled = false;
-        renderAcc1Stamps();
-    } else {
-        document.getElementById('shop1-attempts').textContent = 5;
-        document.getElementById('shop1-hints').textContent = 1;
-        document.getElementById('shop1-hint-btn').disabled = false;
-        renderShop1Keys();
-        renderShop1Rules();
+        sendGameData({ type: "puzzle1", data: puzzle1 });
     }
 }
 
 function sendChat1(who) {
-    const input = document.getElementById(who === 'acc' ? 'acc1-chat-input' : 'shop1-chat-input');
+    const input = document.getElementById(who === "acc" ? "acc1-chat-input" : "shop1-chat-input");
     const text = input.value.trim();
     if (!text) return;
-    addChat1(text, 'self');
-    sendGameData({ type: 'chat1', text: text });
-    input.value = '';
+
+    addChat1(text, "self");
+    sendGameData({ type: "chat1", text: text });
+    input.value = "";
 }
 
 function addChat1(text, type) {
-    const boxId = role === 'accountant' ? 'acc1-chat' : 'shop1-chat';
+    const boxId = role === "accountant" ? "acc1-chat" : "shop1-chat";
     const box = document.getElementById(boxId);
-    const div = document.createElement('div');
+    const div = document.createElement("div");
     div.className = `chat-msg ${type}`;
     div.textContent = text;
     box.appendChild(div);
     box.scrollTop = box.scrollHeight;
 }
 
-['acc1-chat-input', 'shop1-chat-input'].forEach(id => {
-    document.getElementById(id).addEventListener('keydown', e => {
-        if (e.key === 'Enter') sendChat1(id === 'acc1-chat-input' ? 'acc' : 'shop');
+["acc1-chat-input", "shop1-chat-input"].forEach(id => {
+    document.getElementById(id).addEventListener("keydown", e => {
+        if (e.key === "Enter") sendChat1(id === "acc1-chat-input" ? "acc" : "shop");
     });
 });
 
-// ========== 第二关游戏逻辑 ==========
+// ========== 第二关 ==========
 let seq2 = [];
 let attempts2 = 4;
 let won2 = false;
@@ -1256,90 +1733,40 @@ let puzzle2 = null;
 let hints2 = { acc: 1, shop: 1 };
 let extraRule2 = false;
 
-// 规则池
-const BEAST_RULES = [
-    { text: '阵法中恰好有1只金属性神兽', check: (order) => order.filter(k => ALL_RELICS[k].element === '金').length === 1 },
-    { text: '木属性和火属性必须同时入选', check: (order) => order.some(k => ALL_RELICS[k].element === '木') && order.some(k => ALL_RELICS[k].element === '火') },
-    { text: '凶兽不能出现在第1、第4位', check: (order) => ALL_RELICS[order[0]].fortune !== '凶兽' && ALL_RELICS[order[3]].fortune !== '凶兽' },
-    { text: '水属性神兽只能在第2或第3位', check: (order) => {
-        const idx = order.findIndex(k => ALL_RELICS[k].element === '水');
-        return idx === -1 || idx === 1 || idx === 2;
-    }},
-    { text: '麒麟和青龙不能同时出现', check: (order) => !(order.includes('plaque') && order.includes('vase')) },
-    { text: '瑞兽至少有3只', check: (order) => order.filter(k => ALL_RELICS[k].fortune === '瑞兽').length >= 3 }
-];
-
-const RELIC_RULES = [
-    { text: '第1位必须是容器类', check: (order) => ALL_RELICS[order[0]].type === '容器' },
-    { text: '铜器最多出现2件', check: (order) => order.filter(k => ALL_RELICS[k].material === '铜').length <= 2 },
-    { text: '玉器和瓷器不能相邻', check: (order) => {
-        for (let i = 0; i < 3; i++) {
-            const a = ALL_RELICS[order[i]].material;
-            const b = ALL_RELICS[order[i+1]].material;
-            if ((a === '玉' && b === '瓷') || (a === '瓷' && b === '玉')) return false;
-        }
-        return true;
-    }},
-    { text: '饰器类只能在第2或第4位', check: (order) => {
-        for (let i = 0; i < 4; i++) {
-            if (ALL_RELICS[order[i]].type === '饰器' && i !== 1 && i !== 3) return false;
-        }
-        return true;
-    }},
-    { text: '文房类一定不在阵法中', check: (order) => !order.some(k => ALL_RELICS[k].type === '文房') },
-    { text: '相同材质的器物不能相邻', check: (order) => {
-        for (let i = 0; i < 3; i++) {
-            if (ALL_RELICS[order[i]].material === ALL_RELICS[order[i+1]].material) return false;
-        }
-        return true;
-    }}
-];
-
-const BEAST_HINTS = [
-    '饕餮不在阵法中',
-    '朱雀在偶数位',
-    '土属性神兽在第3位'
-];
-
-const RELIC_HINTS = [
-    '第4位是玉器',
-    '炉类必定入选',
-    '牌类在奇数位'
-];
-
 function generatePuzzle2() {
     const keys = Object.keys(ALL_RELICS);
     let best = null;
     let bestRules = { beast: [], relic: [] };
-    
-    // 随机生成并校验唯一解
+
     for (let attempt = 0; attempt < 200; attempt++) {
         const shuffled = keys.sort(() => Math.random() - 0.5);
         const order = shuffled.slice(0, 4);
-        
+
         const validBeastRules = BEAST_RULES.filter(r => r.check(order));
         const validRelicRules = RELIC_RULES.filter(r => r.check(order));
-        
+
         if (validBeastRules.length >= 3 && validRelicRules.length >= 3) {
             const beastRules = validBeastRules.sort(() => Math.random() - 0.5).slice(0, 3);
             const relicRules = validRelicRules.sort(() => Math.random() - 0.5).slice(0, 3);
-            
-            // 唯一解校验
+
             let solutions = 0;
+
             function permute(arr, size) {
                 if (size === 4) {
                     const ok = beastRules.every(r => r.check(arr)) && relicRules.every(r => r.check(arr));
                     if (ok) solutions++;
                     return;
                 }
+
                 for (let i = size; i < arr.length; i++) {
                     [arr[size], arr[i]] = [arr[i], arr[size]];
                     permute(arr, size + 1);
                     [arr[size], arr[i]] = [arr[i], arr[size]];
                 }
             }
+
             permute(keys.slice(), 0);
-            
+
             if (solutions === 1) {
                 best = order;
                 bestRules = {
@@ -1352,20 +1779,19 @@ function generatePuzzle2() {
             }
         }
     }
-    
+
     if (!best) {
-        // 保底方案
-        const fallback = ['vase', 'mirror', 'paper', 'plaque'];
+        const fallback = ["vase", "mirror", "paper", "plaque"];
         return {
             allKeys: keys,
             correctOrder: fallback,
-            beastRules: ['阵法中恰好有1只金属性神兽', '木属性和火属性必须同时入选', '凶兽不能出现在第1、第4位'],
-            relicRules: ['第1位必须是容器类', '铜器最多出现2件', '饰器类只能在第2或第4位'],
-            beastHint: '土属性神兽在第3位',
-            relicHint: '第4位是玉器'
+            beastRules: ["阵法中恰好有1只金属性神兽", "木属性和火属性必须同时入选", "凶兽不能出现在第1、第4位"],
+            relicRules: ["第1位必须是容器类", "铜器最多出现2件", "饰器类只能在第2或第4位"],
+            beastHint: "土属性神兽在第3位",
+            relicHint: "第4位是玉器"
         };
     }
-    
+
     return {
         allKeys: keys,
         correctOrder: best,
@@ -1385,47 +1811,55 @@ function resetState2() {
 }
 
 function enterGame2() {
-    document.getElementById('page-room').classList.add('hidden');
-    if (role === 'accountant') {
-        document.getElementById('game2-accountant').classList.remove('hidden');
+    document.getElementById("page-room").classList.add("hidden");
+
+    if (role === "accountant") {
+        document.getElementById("game2-accountant").classList.remove("hidden");
         renderAcc2Rules();
         renderAcc2Relics();
     } else {
-        document.getElementById('game2-shopkeeper').classList.remove('hidden');
+        document.getElementById("game2-shopkeeper").classList.remove("hidden");
+
         if (puzzle2) {
             renderShop2Rules();
             renderShop2Relics();
-            document.getElementById('shop2-status').textContent = '✅ 已连接 · 可以开始操作';
+            document.getElementById("shop2-status").textContent = "✅ 已连接 · 可以开始操作";
         } else {
-            document.getElementById('shop2-status').textContent = '⏳ 正在同步古物规制...';
+            document.getElementById("shop2-status").textContent = "⏳ 正在同步古物规制...";
         }
     }
-    if (puzzle2) sendGameData({ type: 'puzzle2', data: puzzle2 });
+
+    if (puzzle2) {
+        sendGameData({ type: "puzzle2", data: puzzle2 });
+    }
 }
 
 function renderAcc2Rules() {
-    const list = document.getElementById('acc2-rules');
-    list.innerHTML = '';
+    const list = document.getElementById("acc2-rules");
+    list.innerHTML = "";
+
     puzzle2.beastRules.forEach(r => {
-        const li = document.createElement('li');
+        const li = document.createElement("li");
         li.textContent = r;
         list.appendChild(li);
     });
+
     if (extraRule2) {
-        const li = document.createElement('li');
-        li.className = 'hint-rule';
-        li.textContent = '✨ ' + puzzle2.beastHint;
+        const li = document.createElement("li");
+        li.className = "hint-rule";
+        li.textContent = "✨ " + puzzle2.beastHint;
         list.appendChild(li);
     }
 }
 
 function renderAcc2Relics() {
-    const grid = document.getElementById('acc2-relics');
-    grid.innerHTML = '';
+    const grid = document.getElementById("acc2-relics");
+    grid.innerHTML = "";
+
     puzzle2.allKeys.forEach(key => {
         const relic = ALL_RELICS[key];
-        const card = document.createElement('div');
-        card.className = 'relic-card';
+        const card = document.createElement("div");
+        card.className = `relic-card texture-${relic.texture}`;
         card.innerHTML = `
             <div class="relic-icon">${relic.icon}</div>
             <div class="relic-name">${relic.name}</div>
@@ -1439,28 +1873,31 @@ function renderAcc2Relics() {
 }
 
 function renderShop2Rules() {
-    const list = document.getElementById('shop2-rules');
-    list.innerHTML = '';
+    const list = document.getElementById("shop2-rules");
+    list.innerHTML = "";
+
     puzzle2.relicRules.forEach(r => {
-        const li = document.createElement('li');
+        const li = document.createElement("li");
         li.textContent = r;
         list.appendChild(li);
     });
+
     if (extraRule2) {
-        const li = document.createElement('li');
-        li.className = 'hint-rule';
-        li.textContent = '✨ ' + puzzle2.relicHint;
+        const li = document.createElement("li");
+        li.className = "hint-rule";
+        li.textContent = "✨ " + puzzle2.relicHint;
         list.appendChild(li);
     }
 }
 
 function renderShop2Relics() {
-    const grid = document.getElementById('shop2-relics');
-    grid.innerHTML = '';
+    const grid = document.getElementById("shop2-relics");
+    grid.innerHTML = "";
+
     puzzle2.allKeys.forEach(key => {
         const relic = ALL_RELICS[key];
-        const card = document.createElement('div');
-        card.className = 'relic-card';
+        const card = document.createElement("div");
+        card.className = `relic-card texture-${relic.texture}`;
         card.innerHTML = `
             <div class="relic-icon">${relic.icon}</div>
             <div class="relic-name">${relic.name}</div>
@@ -1469,6 +1906,7 @@ function renderShop2Relics() {
         card.onclick = () => pressRelic2(key);
         grid.appendChild(card);
     });
+
     updateShelf2();
 }
 
@@ -1487,7 +1925,8 @@ function clearInput2() {
 }
 
 function updateShelf2() {
-    const slots = document.querySelectorAll('#shelf2-slots .shelf-slot');
+    const slots = document.querySelectorAll("#shelf2-slots .shelf-slot");
+
     slots.forEach((slot, i) => {
         if (seq2[i]) {
             const relic = ALL_RELICS[seq2[i]];
@@ -1496,8 +1935,9 @@ function updateShelf2() {
                 <div class="slot-beast">${relic.beastIcon}</div>
             `;
         } else {
-            slot.innerHTML = '';
+            slot.innerHTML = "";
         }
+
         slot.onclick = () => {
             if (seq2[i]) {
                 seq2 = seq2.slice(0, i);
@@ -1511,174 +1951,101 @@ function updateShelf2() {
 
 function submitAnswer2() {
     if (seq2.length !== 4 || won2 || attempts2 <= 0) return;
+
     attempts2--;
-    document.getElementById('shop2-attempts').textContent = attempts2;
-    
+    document.getElementById("shop2-attempts").textContent = attempts2;
+
     const correctCount = seq2.filter((k, i) => k === puzzle2.correctOrder[i]).length;
+
     if (correctCount === 4) {
         won2 = true;
-        showFeedback2('✅ 瑞兽归位，机关开启', 'success');
-        document.querySelectorAll('#shelf2-slots .shelf-slot').forEach(s => s.classList.add('win'));
+        showFeedback2("✅ 瑞兽归位，机关开启", "success");
+        document.querySelectorAll("#shelf2-slots .shelf-slot").forEach(s => s.classList.add("win"));
         syncState2();
+
         setTimeout(() => showWin(4 - attempts2), 1000);
     } else {
-        showFeedback2(`❌ 对了 ${correctCount} 位`, 'fail');
-        const shelf = document.getElementById('shelf2-slots');
-        shelf.style.animation = 'shake 0.35s';
+        showFeedback2(`❌ 对了 ${correctCount} 位`, "fail");
+
+        const shelf = document.getElementById("shelf2-slots");
+        shelf.style.animation = "shake 0.35s";
+
         setTimeout(() => {
-            shelf.style.animation = '';
+            shelf.style.animation = "";
             seq2 = [];
             updateShelf2();
             syncState2();
         }, 600);
-        if (attempts2 <= 0) setTimeout(() => { alert('尝试次数用尽，阵法重置'); resetGame2(); }, 500);
+
+        if (attempts2 <= 0) {
+            setTimeout(() => {
+                alert("尝试次数用尽，阵法重置");
+                resetGame2();
+            }, 500);
+        }
     }
-    sendGameData({ type: 'feedback2', text: `提交结果：对了 ${correctCount} 位`, type2: correctCount === 4 ? 'success' : 'fail' });
+
+    sendGameData({ type: "feedback2", text: `提交结果：对了 ${correctCount} 位`, type2: correctCount === 4 ? "success" : "fail" });
 }
 
 function showFeedback2(text, type) {
-    const fb = document.getElementById('feedback2');
+    const fb = document.getElementById("feedback2");
     fb.textContent = text;
     fb.className = `feedback ${type}`;
-    fb.classList.remove('hidden');
+    fb.classList.remove("hidden");
 }
 
 function hideFeedback2() {
-    document.getElementById('feedback2').classList.add('hidden');
+    document.getElementById("feedback2").classList.add("hidden");
 }
 
 function useHint2(who) {
-    if (who === 'acc' && hints2.acc > 0) {
+    if (who === "acc" && hints2.acc > 0) {
         hints2.acc--;
         extraRule2 = true;
-        document.getElementById('acc2-hints').textContent = hints2.acc;
-        document.getElementById('acc2-hint-btn').disabled = true;
+        document.getElementById("acc2-hints").textContent = hints2.acc;
+        document.getElementById("acc2-hint-btn").disabled = true;
+
         renderAcc2Rules();
-        sendGameData({ type: 'hint-acc2', text: puzzle2.beastHint });
-        addChat2(`你使用了提示：${puzzle2.beastHint}`, 'self');
+        sendGameData({ type: "hint-acc2", text: puzzle2.beastHint });
+        addChat2(`你使用了提示：${puzzle2.beastHint}`, "self");
         syncState2();
     }
-    if (who === 'shop' && hints2.shop > 0) {
+
+    if (who === "shop" && hints2.shop > 0) {
         hints2.shop--;
         extraRule2 = true;
-        document.getElementById('shop2-hints').textContent = hints2.shop;
-        document.getElementById('shop2-hint-btn').disabled = true;
+        document.getElementById("shop2-hints").textContent = hints2.shop;
+        document.getElementById("shop2-hint-btn").disabled = true;
+
         renderShop2Rules();
-        sendGameData({ type: 'hint-shop2' });
-        addChat2(`你使用了提示：${puzzle2.relicHint}`, 'self');
+        sendGameData({ type: "hint-shop2" });
+        addChat2(`你使用了提示：${puzzle2.relicHint}`, "self");
         syncState2();
     }
 }
 
 function syncState2() {
-    if (role === 'shopkeeper') {
-        sendGameData({ type: 'state2', data: { 
-            seq: seq2, att: attempts2, won: won2, 
-            hints: hints2
-        }});
+    if (role === "shopkeeper") {
+        sendGameData({
+            type: "state2",
+            data: { seq: seq2, att: attempts2, won: won2, hints: hints2 }
+        });
     }
 }
 
 function handleMessage2(msg) {
-    if (msg.type === 'state2') {
+    if (msg.type === "state2") {
         seq2 = msg.data.seq;
         attempts2 = msg.data.att;
         won2 = msg.data.won;
         hints2 = msg.data.hints;
-        // 修复：对方的extraRule不同步给自己
-        if (role === 'accountant') {
-            document.getElementById('acc2-progress').textContent = seq2.length;
-            document.getElementById('acc2-attempts').textContent = attempts2;
-            document.getElementById('acc2-hints').textContent = hints2.acc;
-            document.getElementById('acc2-hint-btn').disabled = hints2.acc <= 0;
+
+        if (role === "accountant") {
+            document.getElementById("acc2-progress").textContent = seq2.length;
+            document.getElementById("acc2-attempts").textContent = attempts2;
+            document.getElementById("acc2-hints").textContent = hints2.acc;
+            document.getElementById("acc2-hint-btn").disabled = hints2.acc <= 0;
         }
-        if (won2) showWin(4 - attempts2);
-    } else if (msg.type === 'puzzle2') {
-        puzzle2 = msg.data;
-        if (role === 'shopkeeper' && !document.getElementById('game2-shopkeeper').classList.contains('hidden')) {
-            renderShop2Rules();
-            renderShop2Relics();
-            document.getElementById('shop2-status').textContent = '✅ 已连接 · 可以开始操作';
-        }
-    } else if (msg.type === 'reset2') {
-        // 客人收到重置：只重置状态，不生成新谜题
-        resetState2();
-        if (role === 'shopkeeper') {
-            renderShop2Rules();
-            renderShop2Relics();
-            document.getElementById('shop2-status').textContent = '⏳ 正在同步新阵法...';
-        }
-    } else if (msg.type === 'chat2') {
-        addChat2(msg.text, 'peer');
-    } else if (msg.type === 'hint-acc2') {
-        addChat2(`【系统提示】掌眼人透露：${msg.text}`, 'peer');
-    } else if (msg.type === 'hint-shop2') {
-        addChat2('【系统提示】守架人解锁了规制细则', 'peer');
-    } else if (msg.type === 'feedback2') {
-        showFeedback2(msg.text, msg.type2);
-    }
-}
 
-function resetGame2() {
-    sendGameData({ type: 'reset2' });
-    if (isHost) {
-        // 房主：重置状态+生成新谜题+发送
-        resetState2();
-        puzzle2 = generatePuzzle2();
-        document.querySelectorAll('#shelf2-slots .shelf-slot').forEach(s => s.classList.remove('win'));
-        if (role === 'accountant') {
-            renderAcc2Rules();
-            renderAcc2Relics();
-        } else {
-            renderShop2Rules();
-            renderShop2Relics();
-        }
-        sendGameData({ type: 'puzzle2', data: puzzle2 });
-    }
-}
-
-function sendChat2(who) {
-    const input = document.getElementById(who === 'acc' ? 'acc2-chat-input' : 'shop2-chat-input');
-    const text = input.value.trim();
-    if (!text) return;
-    addChat2(text, 'self');
-    sendGameData({ type: 'chat2', text: text });
-    input.value = '';
-}
-
-function addChat2(text, type) {
-    const boxId = role === 'accountant' ? 'acc2-chat' : 'shop2-chat';
-    const box = document.getElementById(boxId);
-    const div = document.createElement('div');
-    div.className = `chat-msg ${type}`;
-    div.textContent = text;
-    box.appendChild(div);
-    box.scrollTop = box.scrollHeight;
-}
-
-['acc2-chat-input', 'shop2-chat-input'].forEach(id => {
-    document.getElementById(id).addEventListener('keydown', e => {
-        if (e.key === 'Enter') sendChat2(id === 'acc2-chat-input' ? 'acc' : 'shop');
-    });
-});
-
-// ========== 通用 ==========
-function showWin(count) {
-    document.getElementById('final-attempts').textContent = count;
-    if (currentLevel === 1) {
-        document.getElementById('win-title').textContent = '🎉 门开了！';
-        document.getElementById('win-desc').textContent = '你们成功推理出了密码';
-    } else {
-        document.getElementById('win-title').textContent = '✨ 瑞兽归位';
-        document.getElementById('win-desc').textContent = '镇守神兽苏醒，暗格机关缓缓开启';
-    }
-    document.getElementById('win-modal').classList.remove('hidden');
-}
-
-function resetCurrentGame() {
-    if (currentLevel === 1) resetGame1();
-    else resetGame2();
-}
-</script>
-</body>
-</html>
+        if (won2) showWin(4 - attempts
