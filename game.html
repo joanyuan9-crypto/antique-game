@@ -255,6 +255,23 @@ body {
 }
 svg.plant-icon { width: 100%; height: 100%; }
 .hidden { display: none !important; }
+.divider {
+    text-align: center;
+    color: #8d6e63;
+    margin: 20px 0;
+    font-size: 14px;
+    position: relative;
+}
+.divider::before, .divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: #d7ccc8;
+}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
 </style>
 </head>
 <body>
@@ -277,10 +294,26 @@ svg.plant-icon { width: 100%; height: 100%; }
     </div>
     <!-- 2. 房间操作 -->
     <div id="page-room" class="hidden">
-        <div class="section-title">第二步：创建或加入房间</div>
+        <div class="section-title">第二步：选择组队方式</div>
         
+        <!-- 快速匹配 -->
         <div class="section">
-            <button class="btn" onclick="createRoom()">创建房间</button>
+            <button class="btn" onclick="startMatch()">⚡ 快速匹配</button>
+            <div id="match-box" class="hidden">
+                <div class="status" id="match-status">正在匹配对手...</div>
+                <div class="status" style="font-size:13px;">
+                    同角色等待中：<span id="match-same-count">0</span> 人<br>
+                    对方角色等待：<span id="match-peer-count">0</span> 人
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="cancelMatch()">取消匹配</button>
+            </div>
+        </div>
+
+        <div class="divider">或 和好友组队</div>
+
+        <!-- 手动创建/加入房间 -->
+        <div class="section">
+            <button class="btn btn-secondary" onclick="createRoom()">创建房间</button>
             <div id="room-box" class="hidden">
                 <div class="section-title" style="font-size:16px; text-align:center;">你的房间号</div>
                 <div class="room-id" id="room-id">----</div>
@@ -395,12 +428,10 @@ const ALL_PLANTS = {
 // 生成随机谜题
 function generatePuzzle() {
     const keys = Object.keys(ALL_PLANTS);
-    // 打乱选4个正确答案
     const shuffled = keys.sort(() => Math.random() - 0.5);
     const correctKeys = shuffled.slice(0, 4);
     const correctOrder = [...correctKeys].sort((a,b) => ALL_PLANTS[b].value - ALL_PLANTS[a].value);
     
-    // 生成规则
     const rules = [];
     const vals = correctOrder.map(k => ALL_PLANTS[k].value);
     
@@ -431,7 +462,11 @@ function pickRole(r) {
 }
 
 function backToRole() {
-    if (socket) socket.disconnect();
+    if (socket) {
+        // 返回时取消匹配并断开连接
+        socket.emit('cancel-match', role);
+        socket.disconnect();
+    }
     role = null;
     roomId = null;
     sequence = [];
@@ -445,6 +480,7 @@ function backToRole() {
     document.getElementById('game-shopkeeper').classList.add('hidden');
     document.getElementById('win-modal').classList.add('hidden');
     document.getElementById('room-box').classList.add('hidden');
+    document.getElementById('match-box').classList.add('hidden');
     document.getElementById('page-role').classList.remove('hidden');
     document.querySelectorAll('.role-card').forEach(card => card.classList.remove('active'));
 }
@@ -452,29 +488,72 @@ function backToRole() {
 // Socket 通信
 function initSocket() {
     socket = io(SERVER_URL, { transports: ['websocket', 'polling'] });
+    
+    // 快速匹配：排队状态更新
+    socket.on('queue-update', (data) => {
+        document.getElementById('match-same-count').textContent = data.yourRoleWaitNum;
+        document.getElementById('match-peer-count').textContent = data.peerRoleWaitNum;
+    });
+
+    // 快速匹配：匹配成功
+    socket.on('match-success', (data) => {
+        roomId = data.roomId;
+        document.getElementById('match-status').textContent = '匹配成功，正在进入游戏...';
+        
+        if (role === 'accountant') {
+            // 账房先生作为房主，生成谜题
+            gameData = generatePuzzle();
+            setTimeout(() => enterGame(), 500);
+        } else {
+            // 店堂伙计作为客人，等待接收谜题
+            setTimeout(() => enterGame(), 500);
+        }
+    });
+
+    // 手动创建房间：房间创建成功
     socket.on('room-created', (id) => {
         roomId = id;
         document.getElementById('room-id').textContent = id;
         document.getElementById('room-box').classList.remove('hidden');
     });
+
+    // 手动创建房间：对方加入
     socket.on('guest-joined', (peerRole) => {
         document.getElementById('room-status').textContent = `对方已加入（${peerRole === 'accountant' ? '账房先生' : '店堂伙计'}），连接成功`;
         gameData = generatePuzzle();
         setTimeout(() => enterGame(), 500);
     });
+
+    // 手动加入房间：加入成功
     socket.on('room-joined', () => {
         document.getElementById('room-status').textContent = '连接成功，正在进入游戏...';
         setTimeout(() => enterGame(), 500);
     });
+
+    // 游戏消息接收
     socket.on('game-data-received', (data) => {
         handleMessage(data);
     });
+
     socket.on('error', (msg) => alert(msg));
     socket.on('peer-left', () => {
         alert('对方已断开连接');
         backToRole();
     });
 }
+
+// ========== 快速匹配功能 ==========
+function startMatch() {
+    document.getElementById('match-box').classList.remove('hidden');
+    document.getElementById('match-status').textContent = '正在匹配对手...';
+    socket.emit('join-match', role);
+}
+
+function cancelMatch() {
+    socket.emit('cancel-match', role);
+    document.getElementById('match-box').classList.add('hidden');
+}
+// =================================
 
 function createRoom() {
     socket.emit('create-room', role);
