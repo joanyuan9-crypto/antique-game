@@ -841,7 +841,7 @@ svg.plant-icon {
 </head>
 <body class="level1">
 <div class="container">
-    <div class="title">🏺 古董店密码门</div>
+    <div class="title">🏺 老古董</div>
 
    <!-- 关卡选择 -->
 <div id="page-level">
@@ -1065,6 +1065,8 @@ let roomId = null;
 let isHost = false;
 
 let level1Passed = localStorage.getItem("level1Passed") === "true";
+// 保底：第一关永久可进入
+if (!level1Passed) level1Passed = true;
 
 // ========== 素材 ==========
 const ALL_PLANTS = {
@@ -1210,10 +1212,39 @@ function refreshLevelLock() {
 }
 
 function pickLevel(level) {
+    // 第一关直接进入，不做任何拦截
+    if (level === 1) {
+        currentLevel = 1;
+        document.body.className = "level1";
+        document.querySelectorAll(".level-card").forEach((card, i) => {
+            card.classList.toggle("active", i === 0);
+        });
+        setTimeout(() => {
+            document.getElementById("page-level").classList.add("hidden");
+            document.getElementById("page-role").classList.remove("hidden");
+            renderRoleSelect();
+        }, 300);
+        return;
+    }
+
+    // 第二关才校验是否通关
     if (level === 2 && !level1Passed) {
         alert("请先通关第一关，再进入第二关。");
         return;
     }
+
+    currentLevel = 2;
+    document.body.className = "level2";
+    document.querySelectorAll(".level-card").forEach((card, i) => {
+        card.classList.toggle("active", i === 1);
+    });
+    setTimeout(() => {
+        document.getElementById("page-level").classList.add("hidden");
+        document.getElementById("page-role").classList.remove("hidden");
+        renderRoleSelect();
+    }, 300);
+}
+
 
     currentLevel = level;
     document.body.className = level === 1 ? "level1" : "level2";
