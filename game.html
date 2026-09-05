@@ -1,3 +1,910 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>老古董</title>
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+:root {
+    --ink: #2E1F18;
+    --paper: #F7EFE3;
+    --ivory: #FFF7EA;
+    --antique: #C8A86A;
+    --bronze: #8B7355;
+    --jade: #A8C9BA;
+    --cinnabar: #B3423D;
+    --porcelain: #D6EAF8;
+    --copper: #B87333;
+    --shadow: rgba(46, 31, 24, 0.08);
+    --radius: 12px;
+}
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", "SimSun", serif;
+    background:
+        radial-gradient(circle at 8% 8%, rgba(200, 168, 106, 0.06) 0%, transparent 50%),
+        linear-gradient(135deg, #F7EFE3 0%, #EFE3D1 45%, #F5EAD8 100%);
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 18px;
+    font-size: 16px;
+    line-height: 1.65;
+}
+.container {
+    max-width: 640px;
+    margin: 0 auto;
+    background:
+        linear-gradient(180deg, rgba(255, 247, 234, 0.96) 0%, rgba(247, 239, 227, 0.98) 100%);
+    border: 1px solid rgba(139, 115, 85, 0.18);
+    border-radius: var(--radius);
+    padding: 28px;
+    box-shadow:
+        0 12px 28px rgba(46, 31, 24, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+.title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    letter-spacing: 3px;
+    color: #1A1A1A;
+}
+.subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: var(--bronze);
+    margin-bottom: 24px;
+    letter-spacing: 2px;
+}
+.btn {
+    display: block;
+    width: 100%;
+    padding: 14px 16px;
+    margin: 12px 0;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.22s ease;
+    font-family: inherit;
+    font-weight: 600;
+    color: white;
+    background: linear-gradient(135deg, #8B7355 0%, #6B5344 100%);
+    box-shadow: 0 4px 10px rgba(107, 83, 68, 0.25);
+}
+.btn:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(135deg, #9B8365 0%, #7B6354 100%);
+    box-shadow: 0 6px 14px rgba(107, 83, 68, 0.35);
+}
+.btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.45;
+    transform: none;
+    box-shadow: none;
+}
+.btn-secondary {
+    background: linear-gradient(135deg, #EFE3D1 0%, #DFD1BD 100%);
+    color: var(--ink);
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    box-shadow: 0 4px 10px rgba(46, 31, 24, 0.08);
+}
+.btn-secondary:hover {
+    background: linear-gradient(135deg, #F5EAD8 0%, #EFE3D1 100%);
+}
+.btn-small {
+    padding: 9px 14px;
+    font-size: 14px;
+    margin: 6px 0;
+}
+.input {
+    width: 100%;
+    padding: 12px 14px;
+    margin: 10px 0;
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 6px;
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--ink);
+}
+.section {
+    margin-bottom: 24px;
+}
+.section-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(139, 115, 85, 0.25);
+    color: #1A1A1A;
+}
+.status {
+    text-align: center;
+    padding: 12px 14px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.7;
+    background: rgba(139, 115, 85, 0.06);
+    color: #5A4835;
+}
+.room-id {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    margin: 16px 0;
+    font-family: "SF Mono", Consolas, monospace;
+    letter-spacing: 8px;
+    color: var(--cinnabar);
+}
+.role-select {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.role-card {
+    flex: 1;
+    padding: 24px 16px;
+    border-radius: var(--radius);
+    text-align: center;
+    cursor: pointer;
+    transition: 0.22s ease;
+    border: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.65);
+}
+.role-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.9);
+}
+.role-card.active {
+    border-color: var(--antique);
+    background: linear-gradient(135deg, rgba(200, 168, 106, 0.14) 0%, rgba(200, 168, 106, 0.04) 100%);
+    box-shadow: 0 0 0 4px rgba(200, 168, 106, 0.08);
+}
+.role-card h3 {
+    margin-bottom: 8px;
+    font-size: 18px;
+    color: #1A1A1A;
+}
+.role-card p {
+    font-size: 13px;
+    color: #6B5344;
+    line-height: 1.6;
+}
+.rules-list {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(247, 239, 227, 0.65) 100%);
+    border-left: 4px solid var(--antique);
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.8;
+    list-style: none;
+    border-radius: 0 8px 8px 0;
+    color: #5A4835;
+}
+.rules-list li {
+    margin: 6px 0;
+    position: relative;
+    padding-left: 18px;
+}
+.rules-list li::before {
+    content: "◆";
+    position: absolute;
+    left: 0;
+    color: var(--antique);
+    font-size: 10px;
+    top: 4px;
+}
+.hint-rule {
+    color: var(--cinnabar);
+    font-weight: 700;
+}
+.chat-box {
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
+    height: 120px;
+    overflow-y: auto;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    background: rgba(255, 255, 255, 0.75);
+}
+.chat-msg {
+    margin: 4px 0;
+}
+.chat-msg.self {
+    text-align: right;
+    color: #1A1A1A;
+}
+.chat-msg.peer {
+    text-align: left;
+    color: #6B5344;
+}
+.chat-input-row {
+    display: flex;
+    gap: 10px;
+}
+.chat-input-row input {
+    flex: 1;
+    padding: 10px 12px;
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    background: rgba(255, 255, 255, 0.85);
+    color: var(--ink);
+}
+.win-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(26, 26, 26, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+.win-content {
+    background: linear-gradient(180deg, #FFF7EA 0%, #F7EFE3 100%);
+    padding: 36px;
+    border-radius: var(--radius);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    box-shadow: 0 20px 40px rgba(46, 31, 24, 0.18);
+}
+.win-content h2 {
+    margin-bottom: 18px;
+    font-size: 24px;
+    color: #1A1A1A;
+}
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+.hidden {
+    display: none !important;
+}
+.divider {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 14px;
+    color: var(--bronze);
+    position: relative;
+}
+.divider::before,
+.divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(139, 115, 85, 0.25), transparent);
+}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+.feedback {
+    text-align: center;
+    padding: 10px 14px;
+    border-radius: 8px;
+    margin: 10px 0;
+    font-weight: 700;
+    font-size: 15px;
+}
+.feedback.success {
+    background: rgba(46, 125, 50, 0.08);
+    color: #2E7D32;
+    border: 1px solid rgba(46, 125, 50, 0.18);
+}
+.feedback.fail {
+    background: rgba(198, 40, 40, 0.08);
+    color: #C62828;
+    border: 1px solid rgba(198, 40, 40, 0.18);
+}
+.action-row {
+    display: flex;
+    gap: 10px;
+    margin: 16px 0;
+}
+.action-row .btn {
+    flex: 1;
+    margin: 0;
+}
+svg.plant-icon {
+    width: 100%;
+    height: 100%;
+}
+
+/* 关卡选择 */
+.level-select {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.level-card {
+    padding: 30px 16px;
+    border-radius: var(--radius);
+    text-align: center;
+    cursor: pointer;
+    transition: 0.22s ease;
+    border: 2px solid transparent;
+    background: rgba(255, 255, 255, 0.65);
+}
+.level-card:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.9);
+}
+.level-card.locked {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+}
+.level-card.active {
+    border-color: var(--antique);
+    background: linear-gradient(135deg, rgba(200, 168, 106, 0.14) 0%, rgba(200, 168, 106, 0.04) 100%);
+    box-shadow: 0 0 0 4px rgba(200, 168, 106, 0.08);
+}
+.level-card h3 {
+    font-size: 20px;
+    margin-bottom: 8px;
+    color: #1A1A1A;
+}
+.level-card p {
+    font-size: 13px;
+    color: #6B5344;
+}
+.lock-icon {
+    margin-top: 8px;
+    font-size: 18px;
+    color: var(--cinnabar);
+}
+
+/* 第一关 */
+.level1 .stamps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.level1 .stamp-card {
+    padding: 14px 8px;
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.22s ease;
+}
+.level1 .stamp-card:hover {
+    border-color: var(--antique);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow);
+}
+.level1 .stamp-card .icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 8px;
+}
+.level1 .stamp-card .name {
+    font-weight: 700;
+    margin-bottom: 4px;
+    font-size: 14px;
+    color: #1A1A1A;
+}
+.level1 .stamp-card .value {
+    color: var(--cinnabar);
+    font-size: 13px;
+    font-weight: 700;
+}
+.level1 .code-slots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.level1 .slot {
+    width: 56px;
+    height: 56px;
+    border: 2px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.22s ease;
+}
+.level1 .slot:hover {
+    border-color: var(--antique);
+    background: rgba(255, 255, 255, 1);
+}
+.level1 .slot:empty { cursor: default; }
+.level1 .slot:empty:hover {
+    border-color: rgba(139, 115, 85, 0.25);
+    background: rgba(255, 255, 255, 0.85);
+}
+.level1 .slot svg {
+    width: 36px;
+    height: 36px;
+}
+.level1 .keys-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 420px;
+    margin: 0 auto;
+}
+.level1 .key-btn {
+    padding: 16px 0;
+    background: rgba(255, 255, 255, 0.75);
+    border: 2px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.22s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+.level1 .key-btn:hover {
+    border-color: var(--antique);
+    background: rgba(255, 255, 255, 1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow);
+}
+.level1 .key-btn:disabled {
+    background: rgba(245, 245, 245, 0.85);
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.level1 .key-btn svg {
+    width: 32px;
+    height: 32px;
+}
+.level1 .key-btn .key-name {
+    font-size: 12px;
+    color: #5A4835;
+}
+
+/* 第二关 */
+.level2 {
+    background:
+        radial-gradient(circle at 8% 8%, rgba(200, 168, 106, 0.08) 0%, transparent 50%),
+        linear-gradient(135deg, #F7EFE3 0%, #EFE3D1 45%, #F5EAD8 100%);
+}
+.level2 .container {
+    background:
+        linear-gradient(180deg, rgba(255, 247, 234, 0.96) 0%, rgba(247, 239, 227, 0.98) 100%);
+    border: 1px solid rgba(139, 115, 85, 0.18);
+    box-shadow:
+        0 12px 28px rgba(46, 31, 24, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.75);
+}
+.level2 .title { color: #1A1A1A; }
+.level2 .subtitle { color: var(--bronze); }
+.level2 .section-title {
+    color: #1A1A1A;
+    border-bottom-color: rgba(139, 115, 85, 0.25);
+}
+.level2 .status {
+    background: rgba(139, 115, 85, 0.06);
+    color: #5A4835;
+}
+.level2 .room-id { color: var(--cinnabar); }
+.level2 .role-card {
+    background: rgba(255, 255, 255, 0.65);
+    border-color: transparent;
+}
+.level2 .role-card.active {
+    border-color: var(--antique);
+    background: linear-gradient(135deg, rgba(200, 168, 106, 0.14) 0%, rgba(200, 168, 106, 0.04) 100%);
+}
+.level2 .rules-list {
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.75) 0%, rgba(247, 239, 227, 0.65) 100%);
+    border-left-color: var(--antique);
+    color: #5A4835;
+}
+.level2 .chat-box {
+    background: rgba(255, 255, 255, 0.75);
+    border-color: rgba(139, 115, 85, 0.25);
+    color: #5A4835;
+}
+.level2 .chat-msg.self { color: #1A1A1A; }
+.level2 .chat-msg.peer { color: #6B5344; }
+.level2 .divider { color: var(--bronze); }
+.level2 .divider::before,
+.level2 .divider::after {
+    background: linear-gradient(90deg, transparent, rgba(139, 115, 85, 0.25), transparent);
+}
+.level2 .level-card {
+    background: rgba(255, 255, 255, 0.65);
+    border-color: transparent;
+}
+.level2 .level-card.active {
+    border-color: var(--antique);
+    background: linear-gradient(135deg, rgba(200, 168, 106, 0.14) 0%, rgba(200, 168, 106, 0.04) 100%);
+}
+.level2 .win-content {
+    background: linear-gradient(180deg, #FFF7EA 0%, #F7EFE3 100%);
+    border-color: rgba(139, 115, 85, 0.25);
+}
+.level2 .win-content h2 { color: #1A1A1A; }
+
+/* 第二关博古架 */
+.level2 .shelf-grid {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.level2 .shelf-slot {
+    width: 72px;
+    height: 90px;
+    border: 2px solid rgba(139, 115, 85, 0.25);
+    border-radius: 8px;
+    background: linear-gradient(180deg, #FFF7EA 0%, #F7EFE3 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.22s ease;
+    position: relative;
+    box-shadow:
+        inset 0 2px 6px rgba(46, 31, 24, 0.06),
+        0 4px 10px rgba(46, 31, 24, 0.08);
+}
+.level2 .shelf-slot:hover {
+    border-color: var(--antique);
+    transform: translateY(-2px);
+    box-shadow:
+        inset 0 2px 6px rgba(46, 31, 24, 0.06),
+        0 8px 16px rgba(46, 31, 24, 0.12);
+}
+.level2 .shelf-slot:empty { cursor: default; }
+.level2 .shelf-slot:empty:hover {
+    border-color: rgba(139, 115, 85, 0.25);
+    transform: none;
+    box-shadow:
+        inset 0 2px 6px rgba(46, 31, 24, 0.06),
+        0 4px 10px rgba(46, 31, 24, 0.08);
+}
+.level2 .slot-relic {
+    font-size: 30px;
+    margin-bottom: 4px;
+    filter: drop-shadow(0 1px 2px rgba(46, 31, 24, 0.12));
+}
+.level2 .slot-beast {
+    font-size: 20px;
+    opacity: 0.55;
+    filter: blur(0.3px);
+    transition: 0.22s ease;
+}
+.level2 .shelf-slot.win .slot-beast {
+    opacity: 1;
+    filter: none;
+    color: var(--antique);
+    text-shadow: 0 0 8px rgba(200, 168, 106, 0.35);
+}
+
+/* 第二关古董卡片 */
+.level2 .relics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.level2 .relic-card {
+    padding: 14px 10px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.22s ease;
+    border: 1px solid rgba(139, 115, 85, 0.25);
+    background: rgba(255, 255, 255, 0.75);
+    position: relative;
+    overflow: hidden;
+}
+.level2 .relic-card::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, transparent 50%);
+}
+.level2 .relic-card:hover {
+    border-color: var(--antique);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 16px rgba(46, 31, 24, 0.12);
+}
+.level2 .relic-card.disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+.level2 .relic-icon {
+    font-size: 34px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 1px 3px rgba(46, 31, 24, 0.15));
+}
+.level2 .relic-name {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #1A1A1A;
+}
+.level2 .relic-meta {
+    font-size: 12px;
+    color: #6B5344;
+    line-height: 1.6;
+}
+.level2 .relic-beast {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(139, 115, 85, 0.25);
+    font-size: 12px;
+    color: var(--cinnabar);
+    line-height: 1.5;
+}
+
+/* 质地标签 */
+.texture-porcelain {
+    background: linear-gradient(135deg, rgba(214, 234, 248, 0.25) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-color: rgba(135, 196, 235, 0.35);
+}
+.texture-bronze {
+    background: linear-gradient(135deg, rgba(139, 115, 85, 0.18) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-color: rgba(139, 115, 85, 0.35);
+}
+.texture-jade {
+    background: linear-gradient(135deg, rgba(168, 201, 186, 0.25) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-color: rgba(168, 201, 186, 0.35);
+}
+.texture-copper {
+    background: linear-gradient(135deg, rgba(184, 115, 51, 0.18) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-color: rgba(184, 115, 51, 0.35);
+}
+.texture-paper {
+    background: linear-gradient(135deg, rgba(248, 241, 229, 0.85) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-color: rgba(200, 168, 106, 0.25);
+}
+</style>
+</head>
+<body class="level1">
+<div class="container">
+    <div class="title">🏮 老古董</div>
+
+    <!-- 关卡选择 -->
+    <div id="page-level">
+        <div class="section-title">选择关卡</div>
+        <div class="level-select">
+            <div class="level-card active" onclick="pickLevel(1)">
+                <h3>第一关</h3>
+                <p>面值密码锁</p>
+            </div>
+            <div class="level-card" id="level2-card" onclick="pickLevel(2)">
+                <h3>第二关</h3>
+                <p>瑞兽镇阵</p>
+                <div class="lock-icon" id="level2-lock">🔒</div>
+            </div>
+        </div>
+        <div class="status">协作、解谜</div>
+    </div>
+
+    <!-- 选角色 -->
+    <div id="page-role" class="hidden">
+        <div class="section-title">第一步：选择你的角色</div>
+        <div class="role-select" id="role-select-box"></div>
+        <div class="status" id="role-desc">目标：协作，打开密码门</div>
+    </div>
+
+    <!-- 房间操作 -->
+    <div id="page-room" class="hidden">
+        <div class="section-title">第二步：选择组队方式</div>
+        <div class="section">
+            <button class="btn" onclick="startMatch()">⚡ 快速匹配</button>
+            <div id="match-box" class="hidden">
+                <div class="status" id="match-status">正在匹配对手...</div>
+                <div class="status" style="font-size:13px;">
+                    同角色等待中：<span id="match-same-count">0</span> 人<br>
+                    对方角色等待：<span id="match-peer-count">0</span> 人
+                </div>
+                <button class="btn btn-secondary btn-small" onclick="cancelMatch()">取消匹配</button>
+            </div>
+        </div>
+        <div class="divider">或 和好友组队</div>
+        <div class="section">
+            <button class="btn btn-secondary" onclick="createRoom()">创建房间</button>
+            <div id="room-box" class="hidden">
+                <div class="section-title" style="font-size:16px; text-align:center;">你的房间号</div>
+                <div class="room-id" id="room-id">----</div>
+                <div class="status" id="room-status">等待对方加入...</div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title" style="font-size:16px;">加入房间</div>
+            <input class="input" id="join-input" maxlength="4" placeholder="输入4位房间号">
+            <button class="btn btn-secondary" onclick="joinRoom()">加入房间</button>
+        </div>
+        <button class="btn btn-secondary" onclick="backToRole()">返回重选</button>
+    </div>
+
+    <!-- 第一关 - 账房 -->
+    <div id="game1-accountant" class="hidden">
+        <div class="status" id="acc1-status">✅ 已连接 · 等待对方操作</div>
+        <div class="section-title">你的任务</div>
+        <ul class="rules-list">
+            <li>你掌握全部 6 张邮票的面值信息</li>
+            <li>通过和店堂伙计沟通，共同推理出 4 张正确的邮票及其顺序</li>
+            <li>确认信息后，配合对方打开密码门</li>
+        </ul>
+        <div class="section-title">账本 · 全部邮票面值</div>
+        <div class="stamps-grid" id="acc1-stamps"></div>
+        <div class="section-title">当前状态</div>
+        <div class="status">
+            对方已输入：<span id="acc1-progress">0</span> / 4 位<br>
+            剩余尝试次数：<span id="acc1-attempts">5</span> 次<br>
+            剩余提示次数：<span id="acc1-hints">1</span> 次
+        </div>
+        <div class="section">
+            <button class="btn btn-secondary btn-small" id="acc1-hint-btn" onclick="useHint1('acc')">
+                💡 透露一张邮票面值给对方
+            </button>
+        </div>
+        <div class="section-title">对讲机</div>
+        <div class="chat-box" id="acc1-chat"></div>
+        <div class="chat-input-row">
+            <input type="text" id="acc1-chat-input" placeholder="输入消息...">
+            <button class="btn btn-secondary" style="width:80px; margin:0;" onclick="sendChat1('acc')">发送</button>
+        </div>
+        <button class="btn" style="margin-top:24px;" onclick="resetGame1()">重新开始</button>
+    </div>
+
+    <!-- 第一关 - 店堂 -->
+    <div id="game1-shopkeeper" class="hidden">
+        <div class="status" id="shop1-status">✅ 已连接 · 可以开始操作</div>
+        <div class="section-title">密码规则</div>
+        <ul class="rules-list" id="shop1-rules"></ul>
+        <div style="text-align:center; margin-bottom:24px;">
+            <div class="section-title">密码锁</div>
+            <div class="code-slots" id="code1-slots">
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+            </div>
+            <div id="feedback1" class="feedback hidden"></div>
+        </div>
+        <div class="section-title">可选邮票</div>
+        <div class="keys-grid" id="keys1-grid"></div>
+        <div class="action-row">
+            <button class="btn btn-secondary" onclick="clearInput1()">清空</button>
+            <button class="btn" id="submit1-btn" onclick="submitAnswer1()">提交验证</button>
+        </div>
+        <div class="status">
+            剩余尝试次数：<span id="shop1-attempts">5</span> 次<br>
+            剩余提示次数：<span id="shop1-hints">1</span> 次
+        </div>
+        <div class="section">
+            <button class="btn btn-secondary btn-small" id="shop1-hint-btn" onclick="useHint1('shop')">
+                💡 申请解锁一条额外规则
+            </button>
+        </div>
+        <div class="section-title">对讲机</div>
+        <div class="chat-box" id="shop1-chat"></div>
+        <div class="chat-input-row">
+            <input type="text" id="shop1-chat-input" placeholder="输入消息...">
+            <button class="btn btn-secondary" style="width:80px; margin:0;" onclick="sendChat1('shop')">发送</button>
+        </div>
+        <button class="btn" style="margin-top:24px;" onclick="resetGame1()">重新开始</button>
+    </div>
+
+    <!-- 第二关 - 掌眼人 -->
+    <div id="game2-accountant" class="hidden">
+        <div class="subtitle">博古架 · 瑞兽镇阵</div>
+        <div class="status" id="acc2-status">✅ 已连接 · 等待对方操作</div>
+        <div class="section-title">你的身份 · 掌眼人</div>
+        <ul class="rules-list">
+            <li>你通晓每件古董背后的镇守神兽、五行与吉凶</li>
+            <li>通过和守架人沟通，共同推理出 4 件正确的古董及其顺序</li>
+            <li>瑞兽归位，方能开启暗格机关</li>
+        </ul>
+        <div class="section-title">神兽规制</div>
+        <ul class="rules-list" id="acc2-rules"></ul>
+        <div class="section-title">古物底册 · 全览</div>
+        <div class="relics-grid" id="acc2-relics"></div>
+        <div class="section-title">当前状态</div>
+        <div class="status">
+            对方已入阵：<span id="acc2-progress">0</span> / 4 位<br>
+            剩余尝试次数：<span id="acc2-attempts">4</span> 次<br>
+            剩余提示次数：<span id="acc2-hints">1</span> 次
+        </div>
+        <div class="section">
+            <button class="btn btn-secondary btn-small" id="acc2-hint-btn" onclick="useHint2('acc')">
+                ✨ 透露一件神兽底细
+            </button>
+        </div>
+        <div class="section-title">传音筒</div>
+        <div class="chat-box" id="acc2-chat"></div>
+        <div class="chat-input-row">
+            <input type="text" id="acc2-chat-input" placeholder="输入消息...">
+            <button class="btn btn-secondary" style="width:80px; margin:0;" onclick="sendChat2('acc')">发送</button>
+        </div>
+        <button class="btn" style="margin-top:24px;" onclick="resetGame2()">重开此阵</button>
+    </div>
+
+    <!-- 第二关 - 守架人 -->
+    <div id="game2-shopkeeper" class="hidden">
+        <div class="subtitle">博古架 · 瑞兽镇阵</div>
+        <div class="status" id="shop2-status">✅ 已连接 · 可以开始操作</div>
+        <div class="section-title">博古架规制</div>
+        <ul class="rules-list" id="shop2-rules"></ul>
+        <div style="text-align:center; margin-bottom:24px;">
+            <div class="section-title">镇阵博古架</div>
+            <div class="shelf-grid" id="shelf2-slots">
+                <div class="shelf-slot"></div>
+                <div class="shelf-slot"></div>
+                <div class="shelf-slot"></div>
+                <div class="shelf-slot"></div>
+            </div>
+            <div id="feedback2" class="feedback hidden"></div>
+        </div>
+        <div class="section-title">可选古物</div>
+        <div class="relics-grid" id="shop2-relics"></div>
+        <div class="action-row">
+            <button class="btn btn-secondary" onclick="clearInput2()">撤下全部</button>
+            <button class="btn" id="submit2-btn" onclick="submitAnswer2()">启动机关</button>
+        </div>
+        <div class="status">
+            剩余尝试次数：<span id="shop2-attempts">4</span> 次<br>
+            剩余提示次数：<span id="shop2-hints">1</span> 次
+        </div>
+        <div class="section">
+            <button class="btn btn-secondary btn-small" id="shop2-hint-btn" onclick="useHint2('shop')">
+                ✨ 解锁一条规制细则
+            </button>
+        </div>
+        <div class="section-title">传音筒</div>
+        <div class="chat-box" id="shop2-chat"></div>
+        <div class="chat-input-row">
+            <input type="text" id="shop2-chat-input" placeholder="输入消息...">
+            <button class="btn btn-secondary" style="width:80px; margin:0;" onclick="sendChat2('shop')">发送</button>
+        </div>
+        <button class="btn" style="margin-top:24px;" onclick="resetGame2()">重开此阵</button>
+    </div>
+</div>
+
+<!-- 通关弹窗 -->
+<div id="win-modal" class="win-modal hidden">
+    <div class="win-content">
+        <h2 id="win-title">🎉 门开了！</h2>
+        <p id="win-desc">你们成功推理出了密码</p>
+        <p style="margin:16px 0; font-size:16px;">总共尝试：<span id="final-attempts">0</span> 次</p>
+        <button class="btn" onclick="resetCurrentGame()">再玩一局</button>
+        <button class="btn btn-secondary" onclick="backToLevelSelect()">返回选关</button>
+    </div>
+</div>
+
 <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
 <script>
 const SERVER_URL = location.origin;
@@ -7,10 +914,9 @@ let socket = null;
 let roomId = null;
 let isHost = false;
 let level1Passed = localStorage.getItem("level1Passed") === "true";
-// 保底：第一关永久可进入
 if (!level1Passed) level1Passed = true;
 
-// ========== 素材 ==========
+// 素材
 const ALL_PLANTS = {
     plum: { name: "梅花", value: 3, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><circle cx="20" cy="14" r="6" fill="#f8bbd0"/><circle cx="12" cy="22" r="6" fill="#f8bbd0"/><circle cx="28" cy="22" r="6" fill="#f8bbd0"/><circle cx="16" cy="30" r="6" fill="#f8bbd0"/><circle cx="24" cy="30" r="6" fill="#f8bbd0"/><circle cx="20" cy="22" r="4" fill="#ffeb3b"/></svg>' },
     orchid: { name: "兰花", value: 8, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><path d="M20 8 L20 32" stroke="#81c784" stroke-width="2"/><ellipse cx="20" cy="12" rx="8" ry="5" fill="#ce93d8"/><ellipse cx="12" cy="18" rx="6" ry="4" fill="#e1bee7"/><ellipse cx="28" cy="18" rx="6" ry="4" fill="#e1bee7"/><ellipse cx="20" cy="24" rx="7" ry="4" fill="#ce93d8"/></svg>' },
@@ -21,72 +927,12 @@ const ALL_PLANTS = {
 };
 
 const ALL_RELICS = {
-    vase: {
-        name: "青花龙纹瓶",
-        material: "瓷",
-        type: "容器",
-        beast: "青龙",
-        element: "木",
-        fortune: "瑞兽",
-        icon: "🏺",
-        beastIcon: "🐉",
-        texture: "porcelain"
-    },
-    furnace: {
-        name: "铜铸玄武炉",
-        material: "铜",
-        type: "容器",
-        beast: "玄武",
-        element: "水",
-        fortune: "瑞兽",
-        icon: "🪔",
-        beastIcon: "🐢",
-        texture: "bronze"
-    },
-    plaque: {
-        name: "麒麟玉佩牌",
-        material: "玉",
-        type: "饰器",
-        beast: "麒麟",
-        element: "土",
-        fortune: "瑞兽",
-        icon: "🎴",
-        beastIcon: "🦄",
-        texture: "jade"
-    },
-    mirror: {
-        name: "朱雀菱花镜",
-        material: "铜",
-        type: "饰器",
-        beast: "朱雀",
-        element: "火",
-        fortune: "瑞兽",
-        icon: "🪞",
-        beastIcon: "🔥",
-        texture: "copper"
-    },
-    ding: {
-        name: "饕餮青铜鼎",
-        material: "铜",
-        type: "容器",
-        beast: "饕餮",
-        element: "金",
-        fortune: "凶兽",
-        icon: "🍶",
-        beastIcon: "👹",
-        texture: "bronze"
-    },
-    paper: {
-        name: "白虎玉镇纸",
-        material: "玉",
-        type: "文房",
-        beast: "白虎",
-        element: "金",
-        fortune: "瑞兽",
-        icon: "📜",
-        beastIcon: "🐯",
-        texture: "paper"
-    }
+    vase: { name: "青花龙纹瓶", material: "瓷", type: "容器", beast: "青龙", element: "木", fortune: "瑞兽", icon: "🏺", beastIcon: "🐉", texture: "porcelain" },
+    furnace: { name: "铜铸玄武炉", material: "铜", type: "容器", beast: "玄武", element: "水", fortune: "瑞兽", icon: "🪔", beastIcon: "🐢", texture: "bronze" },
+    plaque: { name: "麒麟玉佩牌", material: "玉", type: "饰器", beast: "麒麟", element: "土", fortune: "瑞兽", icon: "🎴", beastIcon: "🦄", texture: "jade" },
+    mirror: { name: "朱雀菱花镜", material: "铜", type: "饰器", beast: "朱雀", element: "火", fortune: "瑞兽", icon: "🪞", beastIcon: "🔥", texture: "copper" },
+    ding: { name: "饕餮青铜鼎", material: "铜", type: "容器", beast: "饕餮", element: "金", fortune: "凶兽", icon: "🍶", beastIcon: "👹", texture: "bronze" },
+    paper: { name: "白虎玉镇纸", material: "玉", type: "文房", beast: "白虎", element: "金", fortune: "瑞兽", icon: "📜", beastIcon: "🐯", texture: "paper" }
 };
 
 const BEAST_RULES = [
@@ -127,19 +973,10 @@ const RELIC_RULES = [
     }}
 ];
 
-const BEAST_HINTS = [
-    "饕餮不在阵法中",
-    "朱雀在偶数位",
-    "土属性神兽在第3位"
-];
+const BEAST_HINTS = ["饕餮不在阵法中", "朱雀在偶数位", "土属性神兽在第3位"];
+const RELIC_HINTS = ["第4位是玉器", "炉类必定入选", "牌类在奇数位"];
 
-const RELIC_HINTS = [
-    "第4位是玉器",
-    "炉类必定入选",
-    "牌类在奇数位"
-];
-
-// ========== 关卡选择 ==========
+// 关卡选择
 function refreshLevelLock() {
     const level2Card = document.getElementById("level2-card");
     const level2Lock = document.getElementById("level2-lock");
@@ -153,7 +990,6 @@ function refreshLevelLock() {
 }
 
 function pickLevel(level) {
-    // 第一关直接进入，不做任何拦截
     if (level === 1) {
         currentLevel = 1;
         document.body.className = "level1";
@@ -167,13 +1003,10 @@ function pickLevel(level) {
         }, 300);
         return;
     }
-
-    // 第二关才校验是否通关
     if (level === 2 && !level1Passed) {
         alert("请先通关第一关，再进入第二关。");
         return;
     }
-
     currentLevel = 2;
     document.body.className = "level2";
     document.querySelectorAll(".level-card").forEach((card, i) => {
@@ -259,7 +1092,7 @@ function backToRole() {
     document.getElementById("match-box").classList.add("hidden");
 }
 
-// ========== Socket ==========
+// Socket
 function initSocket() {
     socket = io(SERVER_URL, { transports: ["websocket", "polling"] });
     socket.on("queue-update", data => {
@@ -324,14 +1157,11 @@ function sendGameData(msg) {
 }
 
 function handleGameData(msg) {
-    if (currentLevel === 1) {
-        handleMessage1(msg);
-    } else {
-        handleMessage2(msg);
-    }
+    if (currentLevel === 1) handleMessage1(msg);
+    else handleMessage2(msg);
 }
 
-// ========== 第一关 ==========
+// 第一关逻辑
 let seq1 = [];
 let attempts1 = 5;
 let won1 = false;
@@ -346,10 +1176,10 @@ function generatePuzzle1() {
     const correctOrder = [...correctKeys].sort((a, b) => ALL_PLANTS[b].value - ALL_PLANTS[a].value);
     const rules = [];
     const vals = correctOrder.map(k => ALL_PLANTS[k].value);
-    rules.push(`第一位面值 > 第四位面值`);
-    rules.push(`第二位面值 = 第一位 + 第三位 的一半`);
-    rules.push(`四张面值总和 = ${vals.reduce((a, b) => a + b, 0)} 分`);
-    const extraRule = `最贵的邮票是${ALL_PLANTS[correctOrder[0]].name}`;
+    rules.push("第一位面值 > 第四位面值");
+    rules.push("第二位面值 = 第一位 + 第三位 的一半");
+    rules.push("四张面值总和 = " + vals.reduce((a, b) => a + b, 0) + " 分");
+    const extraRule = "最贵的邮票是" + ALL_PLANTS[correctOrder[0]].name;
     return { allKeys: keys, correctOrder: correctOrder, rules: rules, extraRule: extraRule };
 }
 
@@ -375,9 +1205,8 @@ function enterGameByHost() {
 
 function enterGameByGuest() {
     resetState1();
-    if (currentLevel === 1) {
-        enterGame1();
-    } else {
+    if (currentLevel === 1) enterGame1();
+    else {
         resetState2();
         enterGame2();
     }
@@ -398,9 +1227,7 @@ function enterGame1() {
             document.getElementById("shop1-status").textContent = "⏳ 正在同步谜题数据...";
         }
     }
-    if (puzzle1) {
-        sendGameData({ type: "puzzle1", data: puzzle1 });
-    }
+    if (puzzle1) sendGameData({ type: "puzzle1", data: puzzle1 });
 }
 
 function renderAcc1Stamps() {
@@ -409,11 +1236,7 @@ function renderAcc1Stamps() {
     puzzle1.allKeys.forEach(key => {
         const card = document.createElement("div");
         card.className = "stamp-card";
-        card.innerHTML = `
-            <div class="icon">${ALL_PLANTS[key].svg}</div>
-            <div class="name">${ALL_PLANTS[key].name}</div>
-            <div class="value">${ALL_PLANTS[key].value} 分</div>
-        `;
+        card.innerHTML = '<div class="icon">' + ALL_PLANTS[key].svg + '</div><div class="name">' + ALL_PLANTS[key].name + '</div><div class="value">' + ALL_PLANTS[key].value + ' 分</div>';
         grid.appendChild(card);
     });
 }
@@ -440,7 +1263,7 @@ function renderShop1Keys() {
     puzzle1.allKeys.forEach(key => {
         const btn = document.createElement("button");
         btn.className = "key-btn";
-        btn.innerHTML = `${ALL_PLANTS[key].svg}<span class="key-name">${ALL_PLANTS[key].name}</span>`;
+        btn.innerHTML = ALL_PLANTS[key].svg + '<span class="key-name">' + ALL_PLANTS[key].name + '</span>';
         btn.onclick = () => pressKey1(key);
         grid.appendChild(btn);
     });
@@ -491,7 +1314,7 @@ function submitAnswer1() {
             showWin(5 - attempts1);
         }, 800);
     } else {
-        showFeedback1(`❌ 对了 ${correctCount} 位`, "fail");
+        showFeedback1("❌ 对了 " + correctCount + " 位", "fail");
         const slots = document.getElementById("code1-slots");
         slots.style.animation = "shake 0.35s";
         setTimeout(() => {
@@ -507,13 +1330,13 @@ function submitAnswer1() {
             }, 500);
         }
     }
-    sendGameData({ type: "feedback1", text: `提交结果：对了 ${correctCount} 位`, type2: correctCount === 4 ? "success" : "fail" });
+    sendGameData({ type: "feedback1", text: "提交结果：对了 " + correctCount + " 位", type2: correctCount === 4 ? "success" : "fail" });
 }
 
 function showFeedback1(text, type) {
     const fb = document.getElementById("feedback1");
     fb.textContent = text;
-    fb.className = `feedback ${type}`;
+    fb.className = "feedback " + type;
     fb.classList.remove("hidden");
 }
 
@@ -524,12 +1347,12 @@ function hideFeedback1() {
 function useHint1(who) {
     if (who === "acc" && hints1.acc > 0) {
         const randomKey = puzzle1.allKeys[Math.floor(Math.random() * puzzle1.allKeys.length)];
-        const text = `${ALL_PLANTS[randomKey].name} = ${ALL_PLANTS[randomKey].value}分`;
+        const text = ALL_PLANTS[randomKey].name + " = " + ALL_PLANTS[randomKey].value + "分";
         hints1.acc--;
         document.getElementById("acc1-hints").textContent = hints1.acc;
         document.getElementById("acc1-hint-btn").disabled = true;
         sendGameData({ type: "hint-acc1", text: text });
-        addChat1(`你使用了提示：透露${text}`, "self");
+        addChat1("你使用了提示：透露" + text, "self");
         syncState1();
     }
     if (who === "shop" && hints1.shop > 0) {
@@ -587,7 +1410,7 @@ function handleMessage1(msg) {
     } else if (msg.type === "chat1") {
         addChat1(msg.text, "peer");
     } else if (msg.type === "hint-acc1") {
-        addChat1(`【系统提示】账房透露：${msg.text}`, "peer");
+        addChat1("【系统提示】账房透露：" + msg.text, "peer");
     } else if (msg.type === "hint-shop1") {
         addChat1("【系统提示】店堂解锁了额外规则", "peer");
     } else if (msg.type === "feedback1") {
@@ -600,9 +1423,8 @@ function resetGame1() {
     if (isHost) {
         resetState1();
         puzzle1 = generatePuzzle1();
-        if (role === "accountant") {
-            renderAcc1Stamps();
-        } else {
+        if (role === "accountant") renderAcc1Stamps();
+        else {
             renderShop1Keys();
             renderShop1Rules();
         }
@@ -623,7 +1445,7 @@ function addChat1(text, type) {
     const boxId = role === "accountant" ? "acc1-chat" : "shop1-chat";
     const box = document.getElementById(boxId);
     const div = document.createElement("div");
-    div.className = `chat-msg ${type}`;
+    div.className = "chat-msg " + type;
     div.textContent = text;
     box.appendChild(div);
     box.scrollTop = box.scrollHeight;
@@ -635,7 +1457,7 @@ function addChat1(text, type) {
     });
 });
 
-// ========== 第二关 ==========
+// 第二关逻辑
 let seq2 = [];
 let attempts2 = 4;
 let won2 = false;
@@ -726,9 +1548,7 @@ function enterGame2() {
             document.getElementById("shop2-status").textContent = "⏳ 正在同步古物规制...";
         }
     }
-    if (puzzle2) {
-        sendGameData({ type: "puzzle2", data: puzzle2 });
-    }
+    if (puzzle2) sendGameData({ type: "puzzle2", data: puzzle2 });
 }
 
 function renderAcc2Rules() {
@@ -753,15 +1573,8 @@ function renderAcc2Relics() {
     puzzle2.allKeys.forEach(key => {
         const relic = ALL_RELICS[key];
         const card = document.createElement("div");
-        card.className = `relic-card texture-${relic.texture}`;
-        card.innerHTML = `
-            <div class="relic-icon">${relic.icon}</div>
-            <div class="relic-name">${relic.name}</div>
-            <div class="relic-meta">材质：${relic.material} · ${relic.type}</div>
-            <div class="relic-beast">
-                ${relic.beastIcon} ${relic.beast} · ${relic.element} · ${relic.fortune}
-            </div>
-        `;
+        card.className = "relic-card texture-" + relic.texture;
+        card.innerHTML = '<div class="relic-icon">' + relic.icon + '</div><div class="relic-name">' + relic.name + '</div><div class="relic-meta">材质：' + relic.material + ' · ' + relic.type + '</div><div class="relic-beast">' + relic.beastIcon + ' ' + relic.beast + ' · ' + relic.element + ' · ' + relic.fortune + '</div>';
         grid.appendChild(card);
     });
 }
@@ -788,12 +1601,8 @@ function renderShop2Relics() {
     puzzle2.allKeys.forEach(key => {
         const relic = ALL_RELICS[key];
         const card = document.createElement("div");
-        card.className = `relic-card texture-${relic.texture}`;
-        card.innerHTML = `
-            <div class="relic-icon">${relic.icon}</div>
-            <div class="relic-name">${relic.name}</div>
-            <div class="relic-meta">材质：${relic.material} · ${relic.type}</div>
-        `;
+        card.className = "relic-card texture-" + relic.texture;
+        card.innerHTML = '<div class="relic-icon">' + relic.icon + '</div><div class="relic-name">' + relic.name + '</div><div class="relic-meta">材质：' + relic.material + ' · ' + relic.type + '</div>';
         card.onclick = () => pressRelic2(key);
         grid.appendChild(card);
     });
@@ -819,10 +1628,7 @@ function updateShelf2() {
     slots.forEach((slot, i) => {
         if (seq2[i]) {
             const relic = ALL_RELICS[seq2[i]];
-            slot.innerHTML = `
-                <div class="slot-relic">${relic.icon}</div>
-                <div class="slot-beast">${relic.beastIcon}</div>
-            `;
+            slot.innerHTML = '<div class="slot-relic">' + relic.icon + '</div><div class="slot-beast">' + relic.beastIcon + '</div>';
         } else {
             slot.innerHTML = "";
         }
@@ -849,7 +1655,7 @@ function submitAnswer2() {
         syncState2();
         setTimeout(() => showWin(4 - attempts2), 1000);
     } else {
-        showFeedback2(`❌ 对了 ${correctCount} 位`, "fail");
+        showFeedback2("❌ 对了 " + correctCount + " 位", "fail");
         const shelf = document.getElementById("shelf2-slots");
         shelf.style.animation = "shake 0.35s";
         setTimeout(() => {
@@ -865,13 +1671,13 @@ function submitAnswer2() {
             }, 500);
         }
     }
-    sendGameData({ type: "feedback2", text: `提交结果：对了 ${correctCount} 位`, type2: correctCount === 4 ? "success" : "fail" });
+    sendGameData({ type: "feedback2", text: "提交结果：对了 " + correctCount + " 位", type2: correctCount === 4 ? "success" : "fail" });
 }
 
 function showFeedback2(text, type) {
     const fb = document.getElementById("feedback2");
     fb.textContent = text;
-    fb.className = `feedback ${type}`;
+    fb.className = "feedback " + type;
     fb.classList.remove("hidden");
 }
 
@@ -887,7 +1693,7 @@ function useHint2(who) {
         document.getElementById("acc2-hint-btn").disabled = true;
         renderAcc2Rules();
         sendGameData({ type: "hint-acc2", text: puzzle2.beastHint });
-        addChat2(`你使用了提示：${puzzle2.beastHint}`, "self");
+        addChat2("你使用了提示：" + puzzle2.beastHint, "self");
         syncState2();
     }
     if (who === "shop" && hints2.shop > 0) {
@@ -897,7 +1703,7 @@ function useHint2(who) {
         document.getElementById("shop2-hint-btn").disabled = true;
         renderShop2Rules();
         sendGameData({ type: "hint-shop2" });
-        addChat2(`你使用了提示：${puzzle2.relicHint}`, "self");
+        addChat2("你使用了提示：" + puzzle2.relicHint, "self");
         syncState2();
     }
 }
@@ -941,7 +1747,7 @@ function handleMessage2(msg) {
     } else if (msg.type === "chat2") {
         addChat2(msg.text, "peer");
     } else if (msg.type === "hint-acc2") {
-        addChat2(`【系统提示】掌眼人透露：${msg.text}`, "peer");
+        addChat2("【系统提示】掌眼人透露：" + msg.text, "peer");
     } else if (msg.type === "hint-shop2") {
         addChat2("【系统提示】守架人解锁了规制细则", "peer");
     } else if (msg.type === "feedback2") {
@@ -979,7 +1785,7 @@ function addChat2(text, type) {
     const boxId = role === "accountant" ? "acc2-chat" : "shop2-chat";
     const box = document.getElementById(boxId);
     const div = document.createElement("div");
-    div.className = `chat-msg ${type}`;
+    div.className = "chat-msg " + type;
     div.textContent = text;
     box.appendChild(div);
     box.scrollTop = box.scrollHeight;
@@ -991,7 +1797,7 @@ function addChat2(text, type) {
     });
 });
 
-// ========== 通用 ==========
+// 通用
 function showWin(count) {
     document.getElementById("final-attempts").textContent = count;
     if (currentLevel === 1) {
@@ -1009,8 +1815,8 @@ function resetCurrentGame() {
     else resetGame2();
 }
 
-// 页面加载完成初始化关卡锁状态
-document.addEventListener("DOMContentLoaded", () => {
-    refreshLevelLock();
-});
+// 初始化
+refreshLevelLock();
 </script>
+</body>
+</html>
