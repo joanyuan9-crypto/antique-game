@@ -301,7 +301,8 @@ svg.plant-icon { width: 100%; height: 100%; }
                 <p>掌握密码规则<br>负责操作验证</p>
             </div>
         </div>
-        <div class="status">两边信息不对称，必须沟通才能解谜</div>
+        <!-- 修改点1：替换选角色说明文字 -->
+        <div class="status">目标：协作，打开密码门</div>
     </div>
     <!-- 2. 房间操作 -->
     <div id="page-room" class="hidden">
@@ -342,6 +343,14 @@ svg.plant-icon { width: 100%; height: 100%; }
     <div id="game-accountant" class="hidden">
         <div class="status" id="acc-status">✅ 已连接 · 等待对方操作</div>
         
+        <!-- 修改点2：新增账房先生任务规则 -->
+        <div class="section-title">你的任务</div>
+        <ul class="rules-list">
+            <li>你掌握全部 6 张邮票的面值信息</li>
+            <li>通过和店堂伙计沟通，共同推理出 4 张正确的邮票及其顺序</li>
+            <li>确认信息后，配合对方打开密码门</li>
+        </ul>
+
         <div class="section-title">账本 · 全部邮票面值</div>
         <div class="stamps-grid" id="acc-stamps"></div>
         
@@ -591,6 +600,11 @@ function handleMessage(msg) {
         if (won) showWin();
     } else if (msg.type === 'puzzle') {
         gameData = msg.data;
+        // 修改点3：收到谜题数据后，店堂端再渲染界面，解决初始不可点击问题
+        if (role === 'shopkeeper' && !document.getElementById('game-shopkeeper').classList.contains('hidden')) {
+            renderKeys();
+            renderRules();
+        }
     } else if (msg.type === 'reset') {
         resetLocal();
     } else if (msg.type === 'chat') {
@@ -615,8 +629,13 @@ function enterGame() {
         renderAccountantStamps();
     } else {
         document.getElementById('game-shopkeeper').classList.remove('hidden');
-        renderKeys();
-        renderRules();
+        // 修改点3：店堂端先检查是否已有数据，没有就等同步，不强行渲染
+        if (gameData) {
+            renderKeys();
+            renderRules();
+        } else {
+            document.getElementById('shop-status').textContent = '⏳ 正在同步谜题数据...';
+        }
     }
     
     if (gameData) {
@@ -653,6 +672,8 @@ function renderRules() {
         li.textContent = '✨ ' + gameData.extraRule;
         list.appendChild(li);
     }
+    // 数据加载完成后恢复状态提示
+    document.getElementById('shop-status').textContent = '✅ 已连接 · 可以开始操作';
 }
 
 function renderKeys() {
@@ -682,12 +703,11 @@ function clearInput() {
     hideFeedback();
 }
 
-// 修复：密码槽点击交互
+// 密码槽点击交互
 function updateSlots() {
     const slots = document.querySelectorAll('#code-slots .slot');
     slots.forEach((slot, i) => {
         slot.innerHTML = sequence[i] ? ALL_PLANTS[sequence[i]].svg : '';
-        // 点击已填充的位置，删除该位及之后所有输入
         slot.onclick = () => {
             if (sequence[i]) {
                 sequence = sequence.slice(0, i);
