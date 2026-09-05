@@ -74,6 +74,11 @@ io.on('connection', (socket) => {
     rooms[roomId].candidates.push(candidate);
     socket.to(roomId).emit('candidate-received', candidate);
   });
+  // 游戏/聊天消息统一转发（替代WebRTC数据通道）
+  socket.on('send-game-data', (roomId, data) => {
+    if (!rooms[roomId]) return;
+    socket.to(roomId).emit('game-data-received', data);
+  });
 
   // 优化断线清理：客人掉线只移除客人，房主掉线才销毁房间
   socket.on('disconnect', () => {
