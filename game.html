@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>古董店密码门 · 推理版</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+    font-family: "Microsoft YaHei", sans-serif;
+    background: #f5e6d3;
+    color: #3e2723;
+    min-height: 100vh;
+    padding: 20px;
+}
+.container {
+    max-width: 640px;
+    margin: 0 auto;
+    background: #fff8e1;
+    border: 2px solid #8d6e63;
+    border-radius: 10px;
+    padding: 28px;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+.title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
+    margin-bottom: 24px;
+    color: #5d4037;
+}
+.btn {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    margin: 12px 0;
+    background: #8d6e63;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn:hover { background: #6d4c41; }
+.btn:disabled { background: #bdbdbd; cursor: not-allowed; }
+.btn-secondary { background: #a1887f; }
+.btn-secondary:hover { background: #8d6e63; }
+.btn-small {
+    padding: 8px 12px;
+    font-size: 13px;
+    margin: 6px 0;
+}
+.input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #a1887f;
+    border-radius: 6px;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 6px;
+}
+.section { margin-bottom: 24px; }
+.section-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 14px;
+    color: #5d4037;
+    border-bottom: 1px solid #d7ccc8;
+    padding-bottom: 8px;
+}
+.status {
+    text-align: center;
+    padding: 12px;
+    background: #efebe9;
+    border-radius: 6px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+.room-id {
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    color: #c62828;
+    margin: 16px 0;
+    font-family: monospace;
+    letter-spacing: 8px;
+}
+.role-select {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.role-card {
+    flex: 1;
+    padding: 24px 16px;
+    border: 2px solid #a1887f;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    background: #fff;
+    transition: all 0.2s;
+}
+.role-card.active {
+    border-color: #5d4037;
+    background: #d7ccc8;
+}
+.role-card h3 { margin-bottom: 10px; font-size: 18px; }
+.role-card p { font-size: 13px; color: #6d4c41; line-height: 1.6; }
+
+.stamps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.stamp-card {
+    padding: 14px 8px;
+    background: #fff;
+    border: 1px solid #a1887f;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.stamp-card.selected {
+    border-color: #2e7d32;
+    background: #e8f5e9;
+}
+.stamp-card.disabled { opacity: 0.5; cursor: not-allowed; }
+.stamp-card .icon {
+    width: 40px;
+    height: 40px;
+    margin: 0 auto 8px;
+}
+.stamp-card .name { font-weight: bold; margin-bottom: 4px; font-size: 14px; }
+.stamp-card .value { color: #c62828; font-size: 13px; font-weight: bold; }
+
+.rules-list {
+    background: #fff3e0;
+    border-left: 4px solid #ff8f00;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    line-height: 1.8;
+}
+.rules-list li { margin: 6px 0; }
+.hint-rule {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+.lock-area { text-align: center; margin-bottom: 24px; }
+.code-slots {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+.slot {
+    width: 56px;
+    height: 56px;
+    border: 2px solid #8d6e63;
+    border-radius: 6px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.slot svg { width: 36px; height: 36px; }
+.keys-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 420px;
+    margin: 0 auto;
+}
+.key-btn {
+    padding: 16px 0;
+    background: #fff;
+    border: 2px solid #8d6e63;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+.key-btn:hover { background: #efebe9; }
+.key-btn:disabled { background: #f5f5f5; cursor: not-allowed; opacity: 0.5; }
+.key-btn svg { width: 32px; height: 32px; }
+.key-btn .key-name { font-size: 12px; color: #5d4037; }
+
+.action-row {
+    display: flex;
+    gap: 10px;
+    margin: 16px 0;
+}
+.action-row .btn { flex: 1; margin: 0; }
+
+.feedback {
+    text-align: center;
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+.feedback.success { background: #e8f5e9; color: #2e7d32; }
+.feedback.fail { background: #ffebee; color: #c62828; }
+
+.chat-box {
+    border: 1px solid #d7ccc8;
+    border-radius: 6px;
+    height: 120px;
+    overflow-y: auto;
+    padding: 10px;
+    background: #fff;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+}
+.chat-msg { margin: 4px 0; }
+.chat-msg.self { text-align: right; color: #5d4037; }
+.chat-msg.peer { text-align: left; color: #2e7d32; }
+.chat-input-row {
+    display: flex;
+    gap: 10px;
+}
+.chat-input-row input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #a1887f;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.win-modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+.win-content {
+    background: #fff8e1;
+    padding: 36px;
+    border-radius: 10px;
+    text-align: center;
+    max-width: 400px;
+    width: 90%;
+}
+.win-content h2 { color: #2e7d32; margin-bottom: 18px; font-size: 24px; }
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+}
+svg.plant-icon { width: 100%; height: 100%; }
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="title">🏺 古董店密码门 · 推理版</div>
+
+    <!-- 1. 选角色 -->
+    <div id="page-role">
+        <div class="section-title">第一步：选择你的角色</div>
+        <div class="role-select">
+            <div class="role-card" onclick="pickRole('accountant')">
+                <h3>🧾 账房先生</h3>
+                <p>掌握邮票面值<br>提供数字线索</p>
+            </div>
+            <div class="role-card" onclick="pickRole('shopkeeper')">
+                <h3>🔑 店堂伙计</h3>
+                <p>掌握密码规则<br>负责操作验证</p>
+            </div>
+        </div>
+        <div class="status">两边信息不对称，必须沟通才能解谜</div>
+    </div>
+
+    <!-- 2. 房间操作 -->
+    <div id="page-room" class="hidden">
+        <div class="section-title">第二步：创建或加入房间</div>
+        
+        <div class="section">
+            <button class="btn" onclick="createRoom()">创建房间</button>
+            <div id="room-box" class="hidden">
+                <div class="section-title" style="font-size:16px; text-align:center;">你的房间号</div>
+                <div class="room-id" id="room-id">----</div>
+                <div class="status" id="room-status">等待对方加入...</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-title" style="font-size:16px;">加入房间</div>
+            <input class="input" id="join-input" maxlength="4" placeholder="输入4位房间号">
+            <button class="btn btn-secondary" onclick="joinRoom()">加入房间</button>
+        </div>
+
+        <button class="btn btn-secondary" onclick="backToRole()">返回重选</button>
+    </div>
+
+    <!-- 3. 游戏页 - 账房 -->
+    <div id="game-accountant" class="hidden">
+        <div class="status" id="acc-status">✅ 已连接 · 等待对方操作</div>
+        
+        <div class="section-title">账本 · 全部邮票面值</div>
+        <div class="stamps-grid" id="acc-stamps"></div>
+        
+        <div class="section-title">当前状态</div>
+        <div class="status">
+            对方已输入：<span id="acc-progress">0</span> / 4 位<br>
+            剩余尝试次数：<span id="acc-attempts">5</span> 次<br>
+            剩余提示次数：<span id="acc-hints">1</span> 次
+        </div>
+
+        <div class="section">
+            <button class="btn btn-secondary btn-small" id="acc-hint-btn" onclick="useHint('acc')">
+                💡 透露一张邮票面值给对方
+            </button>
+        </div>
+
+        <div class="section-title">对讲机</div>
+        <div class="chat-box" id="acc-chat"></div>
+        <div class="chat-input-row">
+            <input type="text" id="acc-chat-input" placeholder="输入消息...">
+            <button class="btn btn-secondary" style="width:80px; margin:0;" onclick="sendChat('acc')">发送</button>
+        </div>
+
+        <button class="btn" style="margin-top:24px;" onclick="resetGame()">重新开始</button>
+    </div>
+
+    <!-- 4. 游戏页 - 店堂 -->
+    <div id="game-shopkeeper" class="hidden">
+        <div class="status" id="shop-status">✅ 已连接 · 可以开始操作</div>
+        
+        <div class="section-title">密码规则</div>
+        <ul class="rules-list" id="shop-rules"></ul>
+        
+        <div class="lock-area">
+            <div class="section-title">密码锁</div>
+            <div class="code-slots" id="code-slots">
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+                <div class="slot"></div>
+            </div>
+            <div id="feedback" class="feedback hidden"></div>
+        </div>
+
+        <div class="section-title">可选邮票</div>
+        <div class="keys-grid" id="keys-grid"></div>
+
+        <div class="action-row">
+            <button class="btn btn-secondary" onclick="clearInput()">清空</button>
+            <button class="btn" id="submit-btn" onclick="submitAnswer()">提交验证</button>
+        </div>
+
+        <div class="status">
+            剩余尝试次数：<span id="shop-attempts">5</span> 次<br>
+            剩余提示次数：<span id="shop-hints">1</span> 次
+        </div>
+
+        <div class="section">
+            <button class="btn btn-secondary btn-small" id="shop-hint-btn" onclick="useHint('shop')">
+                💡 申请解锁一条额外规则
+            </button>
+        </div>
+
+        <div class="section-title">对讲机</div>
+        <div class="chat-box" id="shop-chat"></div>
+        <div class="chat-input-row">
+            <input type="text" id="shop-chat-input" placeholder="输入消息...">
+            <button class="btn btn-secondary" style="width:80px; margin:0;" onclick="sendChat('shop')">发送</button>
+        </div>
+
+        <button class="btn" style="margin-top:24px;" onclick="resetGame()">重新开始</button>
+    </div>
+</div>
+
+<!-- 通关弹窗 -->
+<div id="win-modal" class="win-modal hidden">
+    <div class="win-content">
+        <h2>🎉 门开了！</h2>
+        <p>你们成功推理出了密码</p>
+        <p style="margin:16px 0; font-size:16px;">总共尝试：<span id="final-attempts">0</span> 次</p>
+        <button class="btn" onclick="resetGame()">再玩一局</button>
+    </div>
+</div>
+
+<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+<script>
+const SERVER_URL = location.origin;
+const RTC_CONFIG = {
+    iceServers: [
+        { urls: 'stun:stun.qq.com:3478' },
+        { urls: 'stun:stun.miwifi.com:3478' },
+        { urls: 'stun:stun.l.google.com:19302' }
+    ]
+};
+
+let role = null;
+let socket = null;
+let roomId = null;
+let pc = null;
+let dc = null;
+let sequence = [];
+let attempts = 5;
+let won = false;
+let gameData = null;
+let hints = { acc: 1, shop: 1 };
+let extraRuleRevealed = false;
+
+const ALL_PLANTS = {
+    plum: { name: '梅花', value: 3, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><circle cx="20" cy="14" r="6" fill="#f8bbd0"/><circle cx="12" cy="22" r="6" fill="#f8bbd0"/><circle cx="28" cy="22" r="6" fill="#f8bbd0"/><circle cx="16" cy="30" r="6" fill="#f8bbd0"/><circle cx="24" cy="30" r="6" fill="#f8bbd0"/><circle cx="20" cy="22" r="4" fill="#ffeb3b"/></svg>' },
+    orchid: { name: '兰花', value: 8, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><path d="M20 8 L20 32" stroke="#81c784" stroke-width="2"/><ellipse cx="20" cy="12" rx="8" ry="5" fill="#ce93d8"/><ellipse cx="12" cy="18" rx="6" ry="4" fill="#e1bee7"/><ellipse cx="28" cy="18" rx="6" ry="4" fill="#e1bee7"/><ellipse cx="20" cy="24" rx="7" ry="4" fill="#ce93d8"/></svg>' },
+    bamboo: { name: '竹子', value: 5, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><rect x="18" y="6" width="4" height="28" fill="#81c784"/><line x1="18" y1="14" x2="22" y2="14" stroke="#558b2f" stroke-width="2"/><line x1="18" y1="22" x2="22" y2="22" stroke="#558b2f" stroke-width="2"/><line x1="18" y1="30" x2="22" y2="30" stroke="#558b2f" stroke-width="2"/><path d="M22 10 L30 8 M22 18 L30 16 M22 26 L30 24" stroke="#81c784" stroke-width="2" fill="none"/></svg>' },
+    chrysanthemum: { name: '菊花', value: 1, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><g fill="#ffcc80"><circle cx="20" cy="12" r="4"/><circle cx="28" cy="16" r="4"/><circle cx="30" cy="24" r="4"/><circle cx="24" cy="30" r="4"/><circle cx="16" cy="30" r="4"/><circle cx="10" cy="24" r="4"/><circle cx="12" cy="16" r="4"/></g><circle cx="20" cy="22" r="5" fill="#ff8f00"/></svg>' },
+    peony: { name: '牡丹', value: 6, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><g fill="#f48fb1"><circle cx="20" cy="14" r="5"/><circle cx="13" cy="19" r="5"/><circle cx="27" cy="19" r="5"/><circle cx="16" cy="26" r="5"/><circle cx="24" cy="26" r="5"/></g><circle cx="20" cy="20" r="4" fill="#ffeb3b"/></svg>' },
+    lotus: { name: '荷花', value: 4, svg: '<svg class="plant-icon" viewBox="0 0 40 40"><ellipse cx="20" cy="16" rx="10" ry="6" fill="#81d4fa"/><ellipse cx="14" cy="22" rx="6" ry="4" fill="#b3e5fc"/><ellipse cx="26" cy="22" rx="6" ry="4" fill="#b3e5fc"/><ellipse cx="20" cy="26" rx="7" ry="4" fill="#81d4fa"/><circle cx="20" cy="20" r="3" fill="#ffeb3b"/></svg>' }
+};
+
+// 生成随机谜题
+function generatePuzzle() {
+    const keys = Object.keys(ALL_PLANTS);
+    // 打乱选4个正确答案
+    const shuffled = keys.sort(() => Math.random() - 0.5);
+    const correctKeys = shuffled.slice(0, 4);
+    const correctOrder = [...correctKeys].sort((a,b) => ALL_PLANTS[b].value - ALL_PLANTS[a].value);
+    
+    // 生成规则
+    const rules = [];
+    const vals = correctOrder.map(k => ALL_PLANTS[k].value);
+    
+    rules.push(`第一位面值 > 第四位面值`);
+    rules.push(`第二位面值 = 第一位 + 第三位 的一半`);
+    rules.push(`四张面值总和 = ${vals.reduce((a,b)=>a+b,0)} 分`);
+    
+    const extraRule = `最贵的邮票是${ALL_PLANTS[correctOrder[0]].name}`;
+    
+    return {
+        allKeys: keys,
+        correctOrder: correctOrder,
+        rules: rules,
+        extraRule: extraRule
+    };
+}
+
+// 角色选择
+function pickRole(r) {
+    role = r;
+    document.querySelectorAll('.role-card').forEach(card => card.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+    setTimeout(() => {
+        document.getElementById('page-role').classList.add('hidden');
+        document.getElementById('page-room').classList.remove('hidden');
+        initSocket();
+    }, 300);
+}
+
+function backToRole() {
+    if (socket) socket.disconnect();
+    if (pc) pc.close();
+    role = null;
+    roomId = null;
+    sequence = [];
+    attempts = 5;
+    won = false;
+    gameData = null;
+    hints = { acc: 1, shop: 1 };
+    extraRuleRevealed = false;
+
+    document.getElementById('page-room').classList.add('hidden');
+    document.getElementById('game-accountant').classList.add('hidden');
+    document.getElementById('game-shopkeeper').classList.add('hidden');
+    document.getElementById('win-modal').classList.add('hidden');
+    document.getElementById('room-box').classList.add('hidden');
+    document.getElementById('page-role').classList.remove('hidden');
+    document.querySelectorAll('.role-card').forEach(card => card.classList.remove('active'));
+}
+
+// Socket 信令
+function initSocket() {
+    socket = io(SERVER_URL, { transports: ['websocket', 'polling'] });
+
+    socket.on('room-created', (id) => {
+        roomId = id;
+        document.getElementById('room-id').textContent = id;
+        document.getElementById('room-box').classList.remove('hidden');
+        createPeerConnection();
+    });
+
+    socket.on('guest-joined', (peerRole) => {
+        document.getElementById('room-status').textContent = `对方已加入（${peerRole === 'accountant' ? '账房先生' : '店堂伙计'}），正在连接...`;
+        gameData = generatePuzzle();
+        createOffer();
+    });
+
+    socket.on('room-joined', (offer, candidates) => {
+        createPeerConnection();
+        if (offer) {
+            pc.setRemoteDescription(new RTCSessionDescription(offer))
+                .then(() => createAnswer())
+                .then(() => {
+                    candidates.forEach(c => pc.addIceCandidate(new RTCIceCandidate(c)));
+                });
+        }
+    });
+
+    socket.on('offer-received', (sdp) => {
+        pc.setRemoteDescription(new RTCSessionDescription(sdp))
+            .then(() => createAnswer());
+    });
+
+    socket.on('answer-received', (sdp) => {
+        pc.setRemoteDescription(new RTCSessionDescription(sdp));
+    });
+
+    socket.on('candidate-received', (candidate) => {
+        pc.addIceCandidate(new RTCIceCandidate(candidate));
+    });
+
+    socket.on('error', (msg) => alert(msg));
+    socket.on('peer-left', () => {
+        alert('对方已断开连接');
+        backToRole();
+    });
+}
+
+function createRoom() {
+    socket.emit('create-room', role);
+}
+
+function joinRoom() {
+    const id = document.getElementById('join-input').value.trim();
+    if (!id || id.length !== 4) return alert('请输入4位房间号');
+    socket.emit('join-room', id, role);
+    roomId = id;
+}
+
+// WebRTC 连接
+function createPeerConnection() {
+    pc = new RTCPeerConnection(RTC_CONFIG);
+
+    pc.ondatachannel = (e) => {
+        dc = e.channel;
+        setupDataChannel();
+    };
+
+    pc.onicecandidate = (e) => {
+        if (e.candidate) {
+            socket.emit('send-candidate', roomId, e.candidate);
+        }
+    };
+
+    pc.onconnectionstatechange = () => {
+        if (pc.connectionState === 'connected') {
+            setTimeout(() => enterGame(), 500);
+        }
+    };
+}
+
+function createOffer() {
+    dc = pc.createDataChannel('game');
+    setupDataChannel();
+    pc.createOffer()
+        .then(offer => pc.setLocalDescription(offer))
+        .then(() => {
+            socket.emit('send-offer', roomId, pc.localDescription);
+        });
+}
+
+function createAnswer() {
+    pc.createAnswer()
+        .then(answer => pc.setLocalDescription(answer))
+        .then(() => {
+            socket.emit('send-answer', roomId, pc.localDescription);
+        });
+}
+
+function setupDataChannel() {
+    dc.onopen = () => console.log('数据通道已建立');
+    dc.onmessage = (e) => handleMessage(JSON.parse(e.data));
+}
+
+function handleMessage(msg) {
+    if (msg.type === 'state') {
+        sequence = msg.data.seq;
+        attempts = msg.data.att;
+        won = msg.data.won;
+        hints = msg.data.hints;
+        extraRuleRevealed = msg.data.extraRule;
+        
+        if (role === 'accountant') {
+            document.getElementById('acc-progress').textContent = sequence.length;
+            document.getElementById('acc-attempts').textContent = attempts;
+            document.getElementById('acc-hints').textContent = hints.acc;
+            document.getElementById('acc-hint-btn').disabled = hints.acc <= 0;
+        }
+        if (won) showWin();
+    } else if (msg.type === 'puzzle') {
+        gameData = msg.data;
+    } else if (msg.type === 'reset') {
+        resetLocal();
+    } else if (msg.type === 'chat') {
+        addChat(msg.text, 'peer');
+    } else if (msg.type === 'hint-acc') {
+        addChat(`【系统提示】账房透露：${msg.text}`, 'peer');
+    } else if (msg.type === 'hint-shop') {
+        extraRuleRevealed = true;
+        if (role === 'shopkeeper') renderRules();
+        addChat(`【系统提示】店堂解锁了额外规则`, 'peer');
+    } else if (msg.type === 'feedback') {
+        showFeedback(msg.text, msg.type2);
+    }
+}
+
+function send(msg) {
+    if (dc && dc.readyState === 'open') {
+        dc.send(JSON.stringify(msg));
+    }
+}
+
+// 游戏逻辑
+function enterGame() {
+    document.getElementById('page-room').classList.add('hidden');
+    
+    if (role === 'accountant') {
+        document.getElementById('game-accountant').classList.remove('hidden');
+        renderAccountantStamps();
+    } else {
+        document.getElementById('game-shopkeeper').classList.remove('hidden');
+        renderKeys();
+        renderRules();
+    }
+    
+    // 房主发送谜题数据
+    if (gameData) {
+        send({ type: 'puzzle', data: gameData });
+    }
+}
+
+function renderAccountantStamps() {
+    const grid = document.getElementById('acc-stamps');
+    grid.innerHTML = '';
+    gameData.allKeys.forEach(key => {
+        const card = document.createElement('div');
+        card.className = 'stamp-card';
+        card.innerHTML = `
+            <div class="icon">${ALL_PLANTS[key].svg}</div>
+            <div class="name">${ALL_PLANTS[key].name}</div>
+            <div class="value">${ALL_PLANTS[key].value} 分</div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function renderRules() {
+    const list = document.getElementById('shop-rules');
+    list.innerHTML = '';
+    gameData.rules.forEach(r => {
+        const li = document.createElement('li');
+        li.textContent = r;
+        list.appendChild(li);
+    });
+    if (extraRuleRevealed) {
+        const li = document.createElement('li');
+        li.className = 'hint-rule';
+        li.textContent = '✨ ' + gameData.extraRule;
+        list.appendChild(li);
+    }
+}
+
+function renderKeys() {
+    const grid = document.getElementById('keys-grid');
+    grid.innerHTML = '';
+    gameData.allKeys.forEach(key => {
+        const btn = document.createElement('button');
+        btn.className = 'key-btn';
+        btn.innerHTML = `${ALL_PLANTS[key].svg}<span class="key-name">${ALL_PLANTS[key].name}</span>`;
+        btn.onclick = () => pressKey(key);
+        grid.appendChild(btn);
+    });
+    updateSlots();
+}
+
+function pressKey(key) {
+    if (won || sequence.length >= 4 || attempts <= 0) return;
+    sequence.push(key);
+    updateSlots();
+    syncState();
+}
+
+function clearInput() {
+    sequence = [];
+    updateSlots();
+    syncState();
+    hideFeedback();
+}
+
+function updateSlots() {
+    const slots = document.querySelectorAll('#code-slots .slot');
+    slots.forEach((slot, i) => {
+        slot.innerHTML = sequence[i] ? ALL_PLANTS[sequence[i]].svg : '';
+    });
+}
+
+function submitAnswer() {
+    if (sequence.length !== 4 || won || attempts <= 0) return;
+    
+    attempts--;
+    document.getElementById('shop-attempts').textContent = attempts;
+    
+    const correctCount = sequence.filter((k, i) => k === gameData.correctOrder[i]).length;
+    
+    if (correctCount === 4) {
+        won = true;
+        showFeedback('✅ 完全正确！密码解锁', 'success');
+        syncState();
+        setTimeout(() => showWin(), 800);
+    } else {
+        showFeedback(`❌ 对了 ${correctCount} 位`, 'fail');
+        const slots = document.getElementById('code-slots');
+        slots.style.animation = 'shake 0.35s';
+        setTimeout(() => {
+            slots.style.animation = '';
+            sequence = [];
+            updateSlots();
+            syncState();
+        }, 600);
+        
+        if (attempts <= 0) {
+            setTimeout(() => {
+                alert('尝试次数用尽，自动重置');
+                resetGame();
+            }, 500);
+        }
+    }
+    
+    send({ type: 'feedback', text: `提交结果：对了 ${correctCount} 位`, type2: correctCount === 4 ? 'success' : 'fail' });
+}
+
+function showFeedback(text, type) {
+    const fb = document.getElementById('feedback');
+    fb.textContent = text;
+    fb.className = `feedback ${type}`;
+    fb.classList.remove('hidden');
+}
+
+function hideFeedback() {
+    document.getElementById('feedback').classList.add('hidden');
+}
+
+function useHint(who) {
+    if (who === 'acc' && hints.acc > 0) {
+        const randomKey = gameData.allKeys[Math.floor(Math.random() * gameData.allKeys.length)];
+        const text = `${ALL_PLANTS[randomKey].name} = ${ALL_PLANTS[randomKey].value}分`;
+        hints.acc--;
+        document.getElementById('acc-hints').textContent = hints.acc;
+        document.getElementById('acc-hint-btn').disabled = true;
+        send({ type: 'hint-acc', text: text });
+        addChat(`你使用了提示：透露${text}`, 'self');
+        syncState();
+    }
+    
+    if (who === 'shop' && hints.shop > 0) {
+        hints.shop--;
+        extraRuleRevealed = true;
+        document.getElementById('shop-hints').textContent = hints.shop;
+        document.getElementById('shop-hint-btn').disabled = true;
+        renderRules();
+        send({ type: 'hint-shop' });
+        addChat('你使用了提示：解锁额外规则', 'self');
+        syncState();
+    }
+}
+
+function syncState() {
+    if (role === 'shopkeeper') {
+        send({ type: 'state', data: { 
+            seq: sequence, 
+            att: attempts, 
+            won: won, 
+            hints: hints,
+            extraRule: extraRuleRevealed
+        }});
+    }
+}
+
+function showWin() {
+    document.getElementById('final-attempts').textContent = 5 - attempts;
+    document.getElementById('win-modal').classList.remove('hidden');
+}
+
+function resetGame() {
+    send({ type: 'reset' });
+    resetLocal();
+}
+
+function resetLocal() {
+    sequence = [];
+    attempts = 5;
+    won = false;
+    hints = { acc: 1, shop: 1 };
+    extraRuleRevealed = false;
+    gameData = generatePuzzle();
+    
+    document.getElementById('win-modal').classList.add('hidden');
+    hideFeedback();
+
+    if (role === 'accountant') {
+        document.getElementById('acc-progress').textContent = 0;
+        document.getElementById('acc-attempts').textContent = 5;
+        document.getElementById('acc-hints').textContent = 1;
+        document.getElementById('acc-hint-btn').disabled = false;
+        renderAccountantStamps();
+    } else {
+        document.getElementById('shop-attempts').textContent = 5;
+        document.getElementById('shop-hints').textContent = 1;
+        document.getElementById('shop-hint-btn').disabled = false;
+        renderKeys();
+        renderRules();
+    }
+    
+    // 重新同步新谜题
+    if (role === 'shopkeeper' && dc && dc.readyState === 'open') {
+        send({ type: 'puzzle', data: gameData });
+    }
+}
+
+// 聊天
+function sendChat(who) {
+    const input = document.getElementById(who === 'acc' ? 'acc-chat-input' : 'shop-chat-input');
+    const text = input.value.trim();
+    if (!text) return;
+
+    addChat(text, 'self');
+    send({ type: 'chat', text: text });
+    input.value = '';
+}
+
+function addChat(text, type) {
+    const boxId = role === 'accountant' ? 'acc-chat' : 'shop-chat';
+    const box = document.getElementById(boxId);
+    const div = document.createElement('div');
+    div.className = `chat-msg ${type}`;
+    div.textContent = text;
+    box.appendChild(div);
+    box.scrollTop = box.scrollHeight;
+}
+
+['acc-chat-input', 'shop-chat-input'].forEach(id => {
+    document.getElementById(id).addEventListener('keydown', e => {
+        if (e.key === 'Enter') sendChat(id === 'acc-chat-input' ? 'acc' : 'shop');
+    });
+});
+</script>
+</body>
+</html>
